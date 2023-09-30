@@ -1,4 +1,4 @@
-import axios from "../utils/axios.js";
+import axios, {endpoints} from "../utils/axios.js";
 import {useEffect, useState} from "react";
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("/login", {username, password});
+            const res = await axios.post(endpoints.login, {username, password});
             setIsSomeoneLogged(true);
             setUser(res.data);
             setError(false);

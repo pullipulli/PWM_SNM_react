@@ -7,8 +7,8 @@ const myAxios = axios.create({
 });
 
 export const endpoints = {
-    login: '/login',
-    register: '/register',
+    login: '/auth/login',
+    register: '/auth/register',
     users: '/users',
     artists: '/artists',
     genres: '/genres',

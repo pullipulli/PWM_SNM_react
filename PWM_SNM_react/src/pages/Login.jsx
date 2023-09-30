@@ -52,7 +52,7 @@ export default function Login() {
             ) : (
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <span>Lama Login</span>
+                        <span>Credenziali SNM: </span>
                         <input
                             type="text"
                             placeholder="username"

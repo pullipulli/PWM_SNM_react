@@ -35,6 +35,8 @@ export default function Login() {
 
     const handleLogout = async (e) => {
         setUser(null);
+        setUsername("");
+        setPassword("");
         setIsSomeoneLogged(false);
         localStorage.clear();
     };

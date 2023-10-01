@@ -1,6 +1,5 @@
 import {NavLink} from "react-router-dom";
 import {AppBar, Container, Stack, Typography} from "@mui/material";
-import {endpoints} from "../utils/axios.js";
 
 
 export default function NavBar() {
@@ -8,7 +7,8 @@ export default function NavBar() {
         <Container maxWidth="xl">
             <Stack direction="row" justifyContent="space-between">
                 <Typography variant="h6" component={NavLink} to="/">Home</Typography>
-                <Typography variant="h6" component={NavLink} to={endpoints.login}>Login</Typography>
+                <Typography variant="h6" component={NavLink} to="/login">Login</Typography>
+                <Typography variant="h6" component={NavLink} to="/register">Register</Typography>
             </Stack>
         </Container>
     </AppBar>

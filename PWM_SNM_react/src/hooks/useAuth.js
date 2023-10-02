@@ -1,7 +1,7 @@
 import {useUser} from "./useUser";
 
 export const useAuth = () => {
-    const {user, addUser, removeUser} = useUser();
+    const {addUser, removeUser, getUser} = useUser();
 
     const login = (user) => {
         addUser(user);
@@ -11,5 +11,5 @@ export const useAuth = () => {
         removeUser();
     };
 
-    return {user, login, logout};
+    return {getUser, login, logout};
 };

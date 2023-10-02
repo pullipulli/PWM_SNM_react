@@ -2,18 +2,23 @@ import {useLocalStorage} from "./useLocalStorage";
 import {useState} from "react";
 
 export const useUser = () => {
+    const {removeItem, setItem, getItem} = useLocalStorage();
     const [user, setUser] = useState();
-    const {removeItem, setItem} = useLocalStorage();
+    const userKey = 'user';
 
     const addUser = (user) => {
         setUser(user);
-        setItem("user", JSON.stringify(user));
+        setItem(userKey, JSON.stringify(user));
     };
 
     const removeUser = () => {
         setUser(null);
-        removeItem("user");
+        removeItem(userKey);
     };
 
-    return {user, addUser, removeUser};
+    const getUser = () => {
+        return JSON.parse(getItem(userKey));
+    }
+
+    return {getUser, addUser, removeUser};
 };

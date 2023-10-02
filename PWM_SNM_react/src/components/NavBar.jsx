@@ -10,6 +10,7 @@ export default function NavBar() {
                 <Typography variant="h6" component={NavLink} to={routes.root.path}>Home</Typography>
                 <Typography variant="h6" component={NavLink} to={routes.login.path}>Login</Typography>
                 <Typography variant="h6" component={NavLink} to={routes.register.path}>Register</Typography>
+                <Typography variant="h6" component={NavLink} to={routes.profile.path}>Profile</Typography>
             </Stack>
         </Container>
     </AppBar>

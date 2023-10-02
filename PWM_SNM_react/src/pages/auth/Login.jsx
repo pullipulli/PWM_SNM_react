@@ -4,13 +4,13 @@ import {FormProvider, useForm} from "react-hook-form";
 import {Box, Button, Divider, Stack} from "@mui/material";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import {useAuth} from "../../hooks/useAuth.js";
-import {useLocalStorage} from "../../hooks/useLocalStorage.jsx";
+import {useNavigate} from "react-router-dom";
+import routes from "../../utils/routes.jsx";
 
 export default function Login() {
     const [error, setError] = useState(false);
-    const {login, logout, user} = useAuth();
-    const {getItem} = useLocalStorage();
-    const [myUser, setMyUser] = useState(JSON.parse(getItem('user')));
+    const {login, logout} = useAuth();
+    const navigate = useNavigate();
 
     const methods = useForm({
         defaultValues: {
@@ -23,9 +23,9 @@ export default function Login() {
         try {
             const res = await axios.post(endpoints.login, data);
             login(res.data);
-            setMyUser(JSON.parse(getItem('user')));
             setError(false);
             methods.reset();
+            navigate(routes.profile.path);
         } catch (err) {
             setError(true);
             console.log(err);
@@ -34,51 +34,38 @@ export default function Login() {
 
     const handleLogout = async (e) => {
         logout();
-        setMyUser(null);
     };
 
     return (
         <div>
-            {myUser ? (
-                <div>
-          <span>
-            Welcome to the SNM dashboard{" "}
-              <b>{myUser.username}</b>.
-          </span>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            ) : (
-                <div>
-                    <FormProvider {...methods}>
-                        <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-                            <Stack spacing={2}>
-                                <div>Credenziali SNM:</div>
+            <FormProvider {...methods}>
+                <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
+                    <Stack spacing={2}>
+                        <div>Credenziali SNM:</div>
 
-                                <RHFTextField
-                                    name="username"
-                                    label="username"
-                                    type="text"
-                                />
+                        <RHFTextField
+                            name="username"
+                            label="username"
+                            type="text"
+                        />
 
-                                <RHFTextField
-                                    name="password"
-                                    label="password"
-                                    type="password"
-                                />
+                        <RHFTextField
+                            name="password"
+                            label="password"
+                            type="password"
+                        />
 
-                                <Divider/>
+                        <Divider/>
 
-                                <Button type="submit">
-                                    Login
-                                </Button>
-                            </Stack>
+                        <Button type="submit">
+                            Login
+                        </Button>
+                    </Stack>
 
-                        </Box>
-                    </FormProvider>
+                </Box>
+            </FormProvider>
 
-                    {error && <div>Username o password errati</div>}
-                </div>
-            )}
+            {error && <div>Username o password errati</div>}
         </div>
     );
 }

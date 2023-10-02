@@ -1,13 +1,16 @@
 import axios, {endpoints} from "../../utils/axios.js";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import {Box, Button, Divider, Stack} from "@mui/material";
 import RHFTextField from "../../components/RHFTextField.jsx";
+import {useAuth} from "../../hooks/useAuth.js";
+import {useLocalStorage} from "../../hooks/useLocalStorage.jsx";
 
 export default function Login() {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-    const [isSomeoneLogged, setIsSomeoneLogged] = useState(false);
     const [error, setError] = useState(false);
+    const {login, logout, user} = useAuth();
+    const {getItem} = useLocalStorage();
+    const [myUser, setMyUser] = useState(JSON.parse(getItem('user')));
 
     const methods = useForm({
         defaultValues: {
@@ -16,23 +19,11 @@ export default function Login() {
         }
     });
 
-    useEffect(() => {
-        localStorage.setItem('user', JSON.stringify(user));
-    }, [user]);
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            setIsSomeoneLogged(true);
-            setUser(user);
-        }
-    }, []);
-
     const onSubmit = async (data) => {
         try {
             const res = await axios.post(endpoints.login, data);
-            setIsSomeoneLogged(true);
-            setUser(res.data);
+            login(res.data);
+            setMyUser(JSON.parse(getItem('user')));
             setError(false);
             methods.reset();
         } catch (err) {
@@ -42,18 +33,17 @@ export default function Login() {
     };
 
     const handleLogout = async (e) => {
-        setUser(null);
-        setIsSomeoneLogged(false);
-        localStorage.clear();
+        logout();
+        setMyUser(null);
     };
 
     return (
         <div>
-            {isSomeoneLogged ? (
+            {myUser ? (
                 <div>
           <span>
             Welcome to the SNM dashboard{" "}
-              <b>{user.username}</b>.
+              <b>{myUser.username}</b>.
           </span>
                     <button onClick={handleLogout}>Logout</button>
                 </div>

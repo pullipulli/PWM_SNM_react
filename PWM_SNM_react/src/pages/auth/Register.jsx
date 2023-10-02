@@ -4,12 +4,15 @@ import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import {Button, Divider, Stack} from "@mui/material";
 import RHFAutocomplete from "../../components/RHFAutocomplete.jsx";
+import {useNavigate} from "react-router-dom";
+import routes from "../../utils/routes.jsx";
 
 export default function Register() {
     const [error, setError] = useState(false);
     const [genres, setGenres] = useState([]);
     const [artists, setArtists] = useState([])
     const methods = useForm();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(endpoints.genres).then((data) => {
@@ -27,6 +30,7 @@ export default function Register() {
         try {
             const res = await axios.post(endpoints.register, data);
             setError(false);
+            navigate(routes.login.path);
             methods.reset();
         } catch (err) {
             setError(true);

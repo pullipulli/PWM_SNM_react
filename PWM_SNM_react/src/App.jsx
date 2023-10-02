@@ -1,13 +1,9 @@
 import './App.css'
 import {Route, Routes} from "react-router-dom";
-import {lazy, Suspense} from "react";
+import {Suspense} from "react";
 
 import NavBar from "./components/NavBar";
-import Register from "./pages/auth/Register.jsx";
-
-const Home = lazy(() => import("./pages/Home.jsx"));
-const Login = lazy(() => import("./pages/auth/Login.jsx"));
-const Page404 = lazy(() => import("./pages/Page404.jsx"));
+import {routesArray} from "./utils/routes.jsx";
 
 function App() {
     return (
@@ -15,10 +11,10 @@ function App() {
             <NavBar/>
             <Suspense fallback={<div className="container">Loading...</div>}>
                 <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/register" element={<Register/>}/>
-                    <Route path="*" element={<Page404/>}/>
+                    {routesArray.map((route) => {
+                            return <Route key={route.path} path={route.path} element={route.element}/>
+                        }
+                    )}
                 </Routes>
             </Suspense>
         </>

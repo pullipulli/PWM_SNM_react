@@ -4,15 +4,13 @@ import {Suspense} from "react";
 
 import NavBar from "./components/NavBar";
 import {routesArray} from "./utils/routes.jsx";
-import {useAuth} from "./hooks/useAuth.js";
+import {useAuth} from "./hooks/useAuth.jsx";
 import {AuthContext} from "./context/AuthContext.jsx";
 
 function App() {
-    const {user, login, logout} = useAuth();
-
     return (
         <>
-            <AuthContext.Provider value={{user, login, logout}}>
+            <AuthContext.Provider value={useAuth()}>
                 <NavBar/>
                 <Suspense fallback={<div className="container">Loading...</div>}>
                     <Routes>

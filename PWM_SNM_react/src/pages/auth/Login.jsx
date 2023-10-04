@@ -1,16 +1,21 @@
 import axios, {endpoints} from "../../utils/axios.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import {Box, Button, Divider, Stack} from "@mui/material";
 import RHFTextField from "../../components/RHFTextField.jsx";
-import {useAuth} from "../../hooks/useAuth.js";
 import {useNavigate} from "react-router-dom";
 import routes from "../../utils/routes.jsx";
+import {useAuthContext} from "../../context/AuthContext.jsx";
 
 export default function Login() {
     const [error, setError] = useState(false);
-    const {login, logout} = useAuth();
+    const {login, getUser} = useAuthContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (getUser()) navigate(routes.profile.path);
+    }, [getUser]);
+
 
     const methods = useForm({
         defaultValues: {
@@ -30,10 +35,6 @@ export default function Login() {
             setError(true);
             console.log(err);
         }
-    };
-
-    const handleLogout = async (e) => {
-        logout();
     };
 
     return (

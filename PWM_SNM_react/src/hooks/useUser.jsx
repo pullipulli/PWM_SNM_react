@@ -7,6 +7,7 @@ export const useUser = () => {
     const userKey = 'user';
 
     const addUser = (user) => {
+        user = {...user, isLogged: true};
         setUser(user);
         setItem(userKey, JSON.stringify(user));
     };

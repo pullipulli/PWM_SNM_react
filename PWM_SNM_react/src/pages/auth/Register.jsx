@@ -6,6 +6,7 @@ import {Button, Divider, Stack} from "@mui/material";
 import RHFAutocomplete from "../../components/RHFAutocomplete.jsx";
 import {useNavigate} from "react-router-dom";
 import routes from "../../utils/routes.jsx";
+import {useAuthContext} from "../../context/AuthContext.jsx";
 
 export default function Register() {
     const [error, setError] = useState(false);
@@ -13,6 +14,11 @@ export default function Register() {
     const [artists, setArtists] = useState([])
     const methods = useForm();
     const navigate = useNavigate();
+    const {getUser} = useAuthContext();
+
+    useEffect(() => {
+        if (getUser()) navigate(routes.profile.path);
+    }, [getUser]);
 
     useEffect(() => {
         axios.get(endpoints.genres).then((data) => {

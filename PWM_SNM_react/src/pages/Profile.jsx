@@ -14,12 +14,6 @@ export default function Profile() {
         }
     }, [isLoggedIn]);
 
-
-    const handleLogout = () => {
-        logout();
-        navigate(routes.login.path);
-    }
-
     const handleUpdate = () => {
         navigate(routes.updateProfile.path);
     };
@@ -48,6 +42,5 @@ export default function Profile() {
             </Stack>
         </Stack>
         <Button onClick={handleUpdate}>Voglio modificare i miei dati</Button>
-        <Button onClick={handleLogout}>Logout</Button>
     </>
 }

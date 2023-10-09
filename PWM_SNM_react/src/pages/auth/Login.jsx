@@ -9,12 +9,12 @@ import {useAuthContext} from "../../context/AuthContext.jsx";
 
 export default function Login() {
     const [error, setError] = useState(false);
-    const {login, getUser} = useAuthContext();
+    const {login, isLoggedIn} = useAuthContext();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (getUser()) navigate(routes.profile.path);
-    }, [getUser]);
+        if (isLoggedIn()) navigate(routes.profile.path);
+    }, [isLoggedIn]);
 
 
     const methods = useForm({

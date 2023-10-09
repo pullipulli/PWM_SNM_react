@@ -1,12 +1,21 @@
 import {Autocomplete, TextField} from "@mui/material";
 import {Controller, useFormContext} from "react-hook-form";
 
-export default function RHFAutocomplete({name, options, label, getOptionLabel, isOptionEqualToValue, multiple}) {
+export default function RHFAutocomplete({
+                                            name,
+                                            options,
+                                            label,
+                                            getOptionLabel,
+                                            isOptionEqualToValue,
+                                            multiple,
+                                            defaultValue,
+                                            required
+                                        }) {
     const {control} = useFormContext();
     return <Controller
         control={control}
         name={name}
-        rules={{required: true}}
+        rules={{required: required}}
         render={
             ({field}) => {
                 const {ref, onChange, onBlur, value, name} = field;
@@ -20,7 +29,7 @@ export default function RHFAutocomplete({name, options, label, getOptionLabel, i
                                      }}
                                      ref={ref}
                                      onBlur={onBlur}
-                                     value={value || []}
+                                     value={value || defaultValue || []}
                                      name={name}
                                      renderInput={(params) => (
                                          <TextField

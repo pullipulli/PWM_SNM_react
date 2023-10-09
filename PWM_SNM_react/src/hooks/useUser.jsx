@@ -21,5 +21,9 @@ export const useUser = () => {
         return JSON.parse(getItem(userKey));
     }
 
-    return {getUser, addUser, removeUser};
+    const isUserStored = () => {
+        return !!getItem(userKey);
+    }
+
+    return {getUser, addUser, removeUser, isUserStored};
 };

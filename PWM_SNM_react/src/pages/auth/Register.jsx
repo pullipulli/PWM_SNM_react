@@ -14,11 +14,11 @@ export default function Register() {
     const [artists, setArtists] = useState([])
     const methods = useForm();
     const navigate = useNavigate();
-    const {getUser} = useAuthContext();
+    const {isLoggedIn} = useAuthContext();
 
     useEffect(() => {
-        if (getUser()) navigate(routes.profile.path);
-    }, [getUser]);
+        if (isLoggedIn()) navigate(routes.profile.path);
+    }, [isLoggedIn]);
 
     useEffect(() => {
         axios.get(endpoints.genres).then((data) => {

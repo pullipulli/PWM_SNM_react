@@ -5,20 +5,25 @@ import {useEffect} from "react";
 import {useAuthContext} from "../context/AuthContext.jsx";
 
 export default function Profile() {
-    const {getUser, logout} = useAuthContext();
+    const {isLoggedIn, getUser, logout} = useAuthContext();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!getUser()) {
+        if (!isLoggedIn()) {
             navigate(routes.login.path);
         }
-    }, [getUser]);
+    }, [isLoggedIn]);
 
 
     const handleLogout = () => {
         logout();
         navigate(routes.login.path);
     }
+
+    const handleUpdate = () => {
+        navigate(routes.updateProfile.path);
+    };
+
 
     return <>
         <Stack>
@@ -29,7 +34,7 @@ export default function Profile() {
             <Typography variant="caption">Generi preferiti: </Typography>
             <Stack>
                 {getUser()?.favouriteGenres?.map((genre) => {
-                    return <Typography key={genre}
+                    return <Typography key={genre._id}
                                        variant="caption">{genre._id}</Typography>;
                 })}
 
@@ -37,12 +42,12 @@ export default function Profile() {
             <Typography variant="caption">Artisti preferiti: </Typography>
             <Stack>
                 {getUser()?.favouriteArtists?.map((artist) => {
-                    return <Typography key={artist}
+                    return <Typography key={artist._id}
                                        variant="caption">{artist.artist.name}</Typography>;
                 })}
             </Stack>
         </Stack>
-        <Button>Voglio modificare i miei dati</Button> {/*TODO*/}
+        <Button onClick={handleUpdate}>Voglio modificare i miei dati</Button>
         <Button onClick={handleLogout}>Logout</Button>
     </>
 }

@@ -42,9 +42,9 @@ export default function UpdateProfile() {
     const onSubmit = async (data) => {
         try {
             const res = await axios.put(`${endpoints.users}/${getUser()?.username}`, data);
-            console.log(res);
             login(res.data);
             methods.reset();
+            navigate(routes.profile.path);
         } catch (err) {
             console.log(err);
         }

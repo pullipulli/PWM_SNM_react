@@ -18,6 +18,10 @@ export default function Profile() {
         navigate(routes.updateProfile.path);
     };
 
+    const handlePlaylists = () => {
+        navigate(`${routes.playlist.path}/${getUser().username}`);
+    }
+
 
     return <>
         <Stack>
@@ -42,5 +46,6 @@ export default function Profile() {
             </Stack>
         </Stack>
         <Button onClick={handleUpdate}>Voglio modificare i miei dati</Button>
+        <Button onClick={handlePlaylists}>Le mie playlist</Button>
     </>
 }

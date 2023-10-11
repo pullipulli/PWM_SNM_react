@@ -1,5 +1,5 @@
 import {useAuthContext} from "../../context/AuthContext.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import routes from "../../utils/routes.jsx";
 import {useNavigate} from "react-router-dom";
 import axios, {endpoints} from "../../utils/axios.js";
@@ -8,6 +8,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import RHFSwitch from "../../components/RHFSwitch.jsx";
 import RHFAutocomplete from "../../components/RHFAutocomplete.jsx";
+import Playlist from "../../components/Playlist.jsx";
 
 export default function UserPlaylist() {
     const {getUser, isLoggedIn} = useAuthContext();
@@ -21,6 +22,8 @@ export default function UserPlaylist() {
         data.privacy = data.privacy === true ? 'public' : 'private';
 
         await axios.post(endpoints.playlists, data);
+
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -42,9 +45,12 @@ export default function UserPlaylist() {
     }, []);
 
     return <>
-        {playlists.map((playlist) => {
-            return <div key={playlist._id.name}>{JSON.stringify(playlist)}</div>
-        })}
+        <Stack direction="row" spacing={2}>
+            {playlists.map((playlist) => {
+                return <Playlist key={playlist._id.name} playlist={playlist}/>;
+            })}
+        </Stack>
+
 
         <h1>Se vuoi aggiungere un'altra playlist:</h1>
         <FormProvider {...methods}>

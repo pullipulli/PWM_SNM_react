@@ -52,7 +52,12 @@ export default function UserPlaylist() {
                 <Stack spacing={2}>
                     <RHFTextField type="text" name="name" label="Nome della playlist" required/>
                     <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
-                                     getOptionLabel={(option) => `${option.song.name}(TODO Nomi, Artisti)`}
+                                     getOptionLabel={(option) => {
+                                         const artists = option.song.artists.map((artist) => {
+                                             return artist.name;
+                                         });
+                                         return `${option.song.name} (${artists})`;
+                                     }}
                                      isOptionEqualToValue={(option, value) => option._id === value._id}
                                      multiple
                                      required/>

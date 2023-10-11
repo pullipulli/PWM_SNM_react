@@ -25,6 +25,10 @@ export default function Playlist({playlist}) {
                 <ListItemText primary={playlist.description} secondary="Descrizione"/>
             </ListItemButton>
 
+            <ListItemButton>
+                <ListItemText primary={playlist.tags.toString()} secondary="Tags"/>
+            </ListItemButton>
+
             <ListItemButton onClick={handleClick}>
                 <ListItemText primary="Lista canzoni"/>
                 {openSongs ? <ExpandLess/> : <ExpandMore/>}

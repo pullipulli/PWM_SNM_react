@@ -5,6 +5,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios, {endpoints} from "../utils/axios.js";
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Playlist({playlist}) {
     const [openSongs, setOpenSongs] = useState(true);
@@ -71,9 +72,10 @@ export default function Playlist({playlist}) {
                 </List>
             </Collapse>
 
-            <ListItemButton onClick={deletePlaylist}>
-                <ListItemText primary="Elimina questa playlist" sx={{color: "red"}}/>
-            </ListItemButton>
+            <IconButton onClick={deletePlaylist}>
+                <DeleteIcon sx={{color: "red"}}/>
+            </IconButton>
+
 
             {/* TODO modo per modificare una canzone */}
         </List>

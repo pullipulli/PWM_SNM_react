@@ -1,12 +1,25 @@
 import React, {useState} from "react";
-import {Card, Collapse, List, ListItemButton, ListItemText, ListSubheader} from "@mui/material";
+import {Card, Collapse, IconButton, List, ListItemButton, ListItemText, ListSubheader} from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios, {endpoints} from "../utils/axios.js";
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function Playlist({playlist}) {
     const [openSongs, setOpenSongs] = useState(true);
     const [showPlaylist, setShowPlaylist] = useState(true);
+    const [editPlaylist, setEditPlaylist] = useState(false);
+
+    const EditPlaylistForm = (props) => {
+        return <div>EditForm</div>;
+    };
+
+    const EditButton = (props) => {
+        return <IconButton onClick={() => setEditPlaylist(!editPlaylist)}>
+            {editPlaylist ? <CloseIcon/> : <EditIcon/>}
+        </IconButton>;
+    }
 
     const handleClick = () => {
         setOpenSongs(!openSongs);
@@ -16,6 +29,11 @@ export default function Playlist({playlist}) {
         axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`);
         setShowPlaylist(false);
     }
+
+    if (editPlaylist) return <>
+        <EditButton/>
+        <EditPlaylistForm/>
+    </>;
 
     return <>{showPlaylist ? <Card>
         <List
@@ -28,6 +46,7 @@ export default function Playlist({playlist}) {
                 </ListSubheader>
             }
         >
+            <EditButton/>
             <ListItemButton>
                 <ListItemText primary={playlist.description} secondary="Descrizione"/>
             </ListItemButton>

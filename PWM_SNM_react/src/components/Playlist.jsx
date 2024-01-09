@@ -1,23 +1,85 @@
-import React, {useState} from "react";
-import {Card, Collapse, IconButton, List, ListItemButton, ListItemText, ListSubheader} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {
+    Button,
+    Card,
+    Collapse,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemText,
+    ListSubheader,
+    Stack
+} from "@mui/material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios, {endpoints} from "../utils/axios.js";
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RHFTextField from "./RHFTextField.jsx";
+import RHFAutocomplete from "./RHFAutocomplete.jsx";
+import RHFSwitch from "./RHFSwitch.jsx";
+import {FormProvider, useForm} from "react-hook-form";
+import {useAuthContext} from "../context/AuthContext.jsx";
 
 export default function Playlist({playlist}) {
+    const {getUser} = useAuthContext();
     const [openSongs, setOpenSongs] = useState(true);
     const [showPlaylist, setShowPlaylist] = useState(true);
     const [editPlaylist, setEditPlaylist] = useState(false);
+    const methods = useForm();
+    const [songs, setSongs] = useState([]);
+
+    useEffect(() => {
+        axios.get(endpoints.songs).then(res => {
+            setSongs(res.data);
+        });
+    }, []);
+
+    const handleUpdatePlaylist = (data) => {
+        data.owner = getUser()?.username;
+        data.privacy = data.privacy === true ? 'public' : 'private';
+        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data).then(r => window.location.reload());
+    }
 
     const EditPlaylistForm = (props) => {
-        return <div>EditForm</div>;
+        return <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(handleUpdatePlaylist)}>
+                <Stack spacing={2}>
+                    <RHFTextField type="text" name="name" label="Nome della playlist"
+                                  required/>
+                    <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
+                                     getOptionLabel={(option) => {
+                                         const artists = option.song.artists.map((artist) => {
+                                             return artist.name;
+                                         });
+                                         return `${option.song.name} (${artists})`;
+                                     }}
+                                     isOptionEqualToValue={(option, value) => option._id === value._id}
+                                     multiple
+                                     required/>
+                    <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
+                    <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
+                    <RHFTextField type="text" name="tags" label="Tags" multiline/>
+                    <Button type="submit">Modifica playlist</Button>
+                </Stack>
+            </form>
+        </FormProvider>;
     };
 
     const EditButton = (props) => {
-        return <IconButton onClick={() => setEditPlaylist(!editPlaylist)}>
+        const privacy = playlist.privacy === 'public';
+
+        return <IconButton onClick={() => {
+            methods.reset({
+                name: playlist._id.name,
+                songs: playlist.songs,
+                description: playlist.description,
+                privacy: privacy,
+                tags: "#" + playlist.tags.join("#"),
+            });
+            setEditPlaylist(!editPlaylist)
+        }}>
             {editPlaylist ? <CloseIcon/> : <EditIcon/>}
         </IconButton>;
     }
@@ -64,7 +126,6 @@ export default function Playlist({playlist}) {
             <Collapse in={openSongs} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {playlist.songs.map((song) => {
-                        console.log(song)
                         return <ListItemButton key={song._id} sx={{pl: 4}}>
                             <ListItemText primary={song.song.name}/>
                         </ListItemButton>
@@ -75,9 +136,6 @@ export default function Playlist({playlist}) {
             <IconButton onClick={deletePlaylist}>
                 <DeleteIcon sx={{color: "red"}}/>
             </IconButton>
-
-
-            {/* TODO modo per modificare una canzone */}
         </List>
     </Card> : <div>Eliminata</div>}</>;
 }

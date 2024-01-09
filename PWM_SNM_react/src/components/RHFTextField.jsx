@@ -8,8 +8,9 @@ export default function RHFTextField({name, type, label, required, multiline}) {
         control={control}
         name={name}
         rules={{required: required}}
-        render={({field, value}) => <TextField {...field} value={value} multiline={multiline} label={label}
-                                               type={type}/>
+        render={({field}) => <TextField {...field} value={field.value} multiline={multiline}
+                                        label={label}
+                                        type={type}/>
         }
     />
 }

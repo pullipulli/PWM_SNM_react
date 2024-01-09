@@ -11,7 +11,8 @@ export default function RHFSwitch({name, labelOn, labelOff, required}) {
         render={({field: {onChange, value, name, onBlur, disabled, ref}}) => {
             return <Stack direction="row">
                 <Typography>{labelOff}</Typography>
-                <Switch value={value} onChange={onChange} name={name} onBlur={onBlur} disabled={disabled} ref={ref}/>
+                <Switch value={value} onChange={onChange} name={name} onBlur={onBlur}
+                        disabled={disabled} ref={ref}/>
                 <Typography>{labelOn}</Typography>
             </Stack>
         }}

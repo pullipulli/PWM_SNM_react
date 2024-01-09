@@ -19,7 +19,7 @@ export default function RHFAutocomplete({
         render={
             ({field}) => {
                 const {ref, onChange, onBlur, value, name} = field;
-                //TODO bottoni seleziona tutto e deseleziona tutto
+                //TODO bottone seleziona tutto
                 return <Autocomplete options={options || []}
                                      getOptionLabel={getOptionLabel}
                                      multiple={multiple}
@@ -29,7 +29,7 @@ export default function RHFAutocomplete({
                                      }}
                                      ref={ref}
                                      onBlur={onBlur}
-                                     value={value || defaultValue || []}
+                                     value={value || []}
                                      name={name}
                                      renderInput={(params) => (
                                          <TextField

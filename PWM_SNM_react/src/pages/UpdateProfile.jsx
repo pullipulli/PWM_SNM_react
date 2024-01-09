@@ -18,7 +18,7 @@ export default function UpdateProfile() {
         defaultValues: {
             currentPassword: "",
             newPassword: "",
-            newPassword1: ""
+            newPassword1: "",
         }
     });
 
@@ -33,6 +33,14 @@ export default function UpdateProfile() {
             setArtists(data.data);
         });
     }, []);
+
+    useEffect(() => {
+        methods.reset({
+                favouriteGenres: getUser()?.favouriteGenres,
+                favouriteArtists: getUser()?.favouriteArtists
+            }
+        );
+    }, [genres, artists]);
 
     useEffect(() => {
         if (!isLoggedIn())

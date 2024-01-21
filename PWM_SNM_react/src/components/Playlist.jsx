@@ -3,6 +3,10 @@ import {
     Button,
     Card,
     Collapse,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     IconButton,
     List,
     ListItemButton,
@@ -13,7 +17,6 @@ import {
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios, {endpoints} from "../utils/axios.js";
-import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RHFTextField from "./RHFTextField.jsx";
@@ -61,8 +64,11 @@ export default function Playlist({playlist}) {
                     <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
                     <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
                     <RHFTextField type="text" name="tags" label="Tags" multiline/>
-                    <Button type="submit">Modifica playlist</Button>
                 </Stack>
+                <DialogActions>
+                    <Button onClick={() => setEditPlaylist(!editPlaylist)}>Cancel</Button>
+                    <Button type="submit">Modifica</Button>
+                </DialogActions>
             </form>
         </FormProvider>;
     };
@@ -80,7 +86,7 @@ export default function Playlist({playlist}) {
             });
             setEditPlaylist(!editPlaylist)
         }}>
-            {editPlaylist ? <CloseIcon/> : <EditIcon/>}
+            <EditIcon/>
         </IconButton>;
     }
 
@@ -93,49 +99,57 @@ export default function Playlist({playlist}) {
         setShowPlaylist(false);
     }
 
-    if (editPlaylist) return <>
-        <EditButton/>
-        <EditPlaylistForm/>
-    </>;
-
-    return <>{showPlaylist ? <Card>
-        <List
-            sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Playlist {playlist._id.name} di {playlist._id.owner}
-                </ListSubheader>
-            }
+    return <>
+        <Dialog
+            open={editPlaylist}
+            onClose={() => setEditPlaylist(!editPlaylist)}
         >
-            <EditButton/>
-            <ListItemButton>
-                <ListItemText primary={playlist.description} secondary="Descrizione"/>
-            </ListItemButton>
+            <DialogTitle>Aggiorna i dati della tua playlist!</DialogTitle>
+            <DialogContent>
+                <EditPlaylistForm/>
+            </DialogContent>
+        </Dialog>
 
-            <ListItemButton>
-                <ListItemText primary={playlist.tags.toString()} secondary="Tags"/>
-            </ListItemButton>
+        {showPlaylist ?
+            <Card>
+                <List
+                    sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader">
+                            Playlist {playlist._id.name} di {playlist._id.owner}
+                        </ListSubheader>
+                    }
+                >
+                    <EditButton/>
+                    <ListItemButton>
+                        <ListItemText primary={playlist.description} secondary="Descrizione"/>
+                    </ListItemButton>
 
-            <ListItemButton onClick={handleClick}>
-                <ListItemText primary="Lista canzoni"/>
-                {openSongs ? <ExpandLess/> : <ExpandMore/>}
-            </ListItemButton>
+                    <ListItemButton>
+                        <ListItemText primary={playlist.tags.toString()} secondary="Tags"/>
+                    </ListItemButton>
 
-            <Collapse in={openSongs} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                    {playlist.songs.map((song) => {
-                        return <ListItemButton key={song._id} sx={{pl: 4}}>
-                            <ListItemText primary={song.song.name}/>
-                        </ListItemButton>
-                    })}
+                    <ListItemButton onClick={handleClick}>
+                        <ListItemText primary="Lista canzoni"/>
+                        {openSongs ? <ExpandLess/> : <ExpandMore/>}
+                    </ListItemButton>
+
+                    <Collapse in={openSongs} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            {playlist.songs.map((song) => {
+                                return <ListItemButton key={song._id} sx={{pl: 4}}>
+                                    <ListItemText primary={song.song.name}/>
+                                </ListItemButton>
+                            })}
+                        </List>
+                    </Collapse>
+
+                    <IconButton onClick={deletePlaylist}>
+                        <DeleteIcon sx={{color: "red"}}/>
+                    </IconButton>
                 </List>
-            </Collapse>
-
-            <IconButton onClick={deletePlaylist}>
-                <DeleteIcon sx={{color: "red"}}/>
-            </IconButton>
-        </List>
-    </Card> : <div>Eliminata</div>}</>;
+            </Card> : <div>Eliminata</div>}
+    </>;
 }

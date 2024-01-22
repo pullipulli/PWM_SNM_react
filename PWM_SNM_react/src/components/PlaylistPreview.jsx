@@ -2,20 +2,14 @@ import React, {useEffect, useState} from "react";
 import {
     Button,
     Card,
-    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
-    List,
-    ListItemButton,
-    ListItemText,
-    ListSubheader,
-    Stack
+    Stack,
+    Typography
 } from "@mui/material";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 import axios, {endpoints} from "../utils/axios.js";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,9 +19,8 @@ import RHFSwitch from "./RHFSwitch.jsx";
 import {FormProvider, useForm} from "react-hook-form";
 import {useAuthContext} from "../context/AuthContext.jsx";
 
-export default function Playlist({playlist, isOwner}) {
+export default function PlaylistPreview({playlist, isOwner}) {
     const {getUser} = useAuthContext();
-    const [openSongs, setOpenSongs] = useState(true);
     const [showPlaylist, setShowPlaylist] = useState(true);
     const [editPlaylist, setEditPlaylist] = useState(false);
     const methods = useForm();
@@ -93,10 +86,6 @@ export default function Playlist({playlist, isOwner}) {
         </IconButton>;
     }
 
-    const handleClick = () => {
-        setOpenSongs(!openSongs);
-    };
-
     const deletePlaylist = () => {
         axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`).then(() => setShowPlaylist(false));
     }
@@ -114,46 +103,15 @@ export default function Playlist({playlist, isOwner}) {
 
         {showPlaylist ?
             <Card>
-                <List
-                    sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
-                    subheader={
-                        <ListSubheader component="div" id="nested-list-subheader">
-                            Playlist {playlist._id.name} di {playlist._id.owner}
-                        </ListSubheader>
-                    }
-                >
-                    {isOwner && <EditButton/>}
+                <Typography variant="h5">{playlist._id.name}</Typography>
+                <Typography variant="caption">by {playlist._id.owner}</Typography>
+                <Typography variant="body1">{playlist.description}</Typography>
 
-                    <ListItemButton>
-                        <ListItemText primary={playlist.description} secondary="Descrizione"/>
-                    </ListItemButton>
+                {isOwner && <EditButton/>}
 
-                    <ListItemButton>
-                        <ListItemText primary={playlist.tags.toString()} secondary="Tags"/>
-                    </ListItemButton>
-
-                    <ListItemButton onClick={handleClick}>
-                        <ListItemText primary="Lista canzoni"/>
-                        {openSongs ? <ExpandLess/> : <ExpandMore/>}
-                    </ListItemButton>
-
-                    <Collapse in={openSongs} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            {playlist.songs.map((song) => {
-                                return <ListItemButton key={song._id} sx={{pl: 4}}>
-                                    <ListItemText primary={song.song.name}/>
-                                </ListItemButton>
-                            })}
-                        </List>
-                    </Collapse>
-
-                    {isOwner && <IconButton onClick={deletePlaylist}>
-                        <DeleteIcon sx={{color: "red"}}/>
-                    </IconButton>
-                    }
-                </List>
+                {isOwner && <IconButton onClick={deletePlaylist}>
+                    <DeleteIcon sx={{color: "red"}}/>
+                </IconButton>}
             </Card> : <div>Eliminata</div>}
     </>;
 }

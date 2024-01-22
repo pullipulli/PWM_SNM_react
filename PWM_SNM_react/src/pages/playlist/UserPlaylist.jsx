@@ -8,7 +8,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import RHFSwitch from "../../components/RHFSwitch.jsx";
 import RHFAutocomplete from "../../components/RHFAutocomplete.jsx";
-import Playlist from "../../components/Playlist.jsx";
+import PlaylistPreview from "../../components/PlaylistPreview.jsx";
 
 export default function UserPlaylist() {
     const {getUser, isLoggedIn} = useAuthContext();
@@ -52,7 +52,7 @@ export default function UserPlaylist() {
     return <>
         <Stack direction="row" spacing={2}>
             {playlists.map((playlist) => {
-                return <Playlist key={playlist._id.name} playlist={playlist} isOwner={isOwner}/>;
+                return <PlaylistPreview key={playlist._id.name} playlist={playlist} isOwner={isOwner}/>;
             })}
         </Stack>
 

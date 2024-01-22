@@ -42,7 +42,10 @@ export default function Playlist({playlist}) {
     const handleUpdatePlaylist = (data) => {
         data.owner = getUser()?.username;
         data.privacy = data.privacy === true ? 'public' : 'private';
-        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data).then(r => window.location.reload());
+        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data).then(() => {
+            setEditPlaylist(!editPlaylist);
+            window.location.reload();
+        });
     }
 
     const EditPlaylistForm = (props) => {
@@ -95,8 +98,7 @@ export default function Playlist({playlist}) {
     };
 
     const deletePlaylist = () => {
-        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`);
-        setShowPlaylist(false);
+        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`).then(() => setShowPlaylist(false));
     }
 
     return <>

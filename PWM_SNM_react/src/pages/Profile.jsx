@@ -19,7 +19,7 @@ export default function Profile() {
     };
 
     const handlePlaylists = () => {
-        navigate(`${routes.playlist.path}/${getUser().username}`);
+        navigate(`${routes.playlists.path}/${getUser().username}`);
     }
 
 

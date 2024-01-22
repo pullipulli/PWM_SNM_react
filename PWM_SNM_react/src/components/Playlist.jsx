@@ -65,7 +65,7 @@ export default function Playlist({playlist}) {
                                      multiple
                                      required/>
                     <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
-                    <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
+                    <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="privacy"/>
                     <RHFTextField type="text" name="tags" label="Tags" multiline/>
                 </Stack>
                 <DialogActions>

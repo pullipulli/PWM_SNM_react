@@ -25,7 +25,7 @@ import RHFSwitch from "./RHFSwitch.jsx";
 import {FormProvider, useForm} from "react-hook-form";
 import {useAuthContext} from "../context/AuthContext.jsx";
 
-export default function Playlist({playlist}) {
+export default function Playlist({playlist, isOwner}) {
     const {getUser} = useAuthContext();
     const [openSongs, setOpenSongs] = useState(true);
     const [showPlaylist, setShowPlaylist] = useState(true);
@@ -124,7 +124,8 @@ export default function Playlist({playlist}) {
                         </ListSubheader>
                     }
                 >
-                    <EditButton/>
+                    {isOwner && <EditButton/>}
+
                     <ListItemButton>
                         <ListItemText primary={playlist.description} secondary="Descrizione"/>
                     </ListItemButton>
@@ -148,9 +149,10 @@ export default function Playlist({playlist}) {
                         </List>
                     </Collapse>
 
-                    <IconButton onClick={deletePlaylist}>
+                    {isOwner && <IconButton onClick={deletePlaylist}>
                         <DeleteIcon sx={{color: "red"}}/>
                     </IconButton>
+                    }
                 </List>
             </Card> : <div>Eliminata</div>}
     </>;

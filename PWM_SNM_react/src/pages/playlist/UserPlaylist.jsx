@@ -1,7 +1,7 @@
 import {useAuthContext} from "../../context/AuthContext.jsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import routes from "../../utils/routes.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios, {endpoints} from "../../utils/axios.js";
 import {Button, Stack} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
@@ -16,6 +16,8 @@ export default function UserPlaylist() {
     const [playlists, setPlaylists] = useState([]);
     const [songs, setSongs] = useState([]);
     const methods = useForm();
+    const {user} = useParams();
+    const isOwner = user === getUser()?.username;
 
     const handleAddPlaylist = async (data) => {
         data.owner = getUser()?.username;
@@ -33,7 +35,10 @@ export default function UserPlaylist() {
     }, [isLoggedIn]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${getUser()?.username}`).then(res => {
+        axios.get(`${endpoints.playlists}/${user}`).then(res => {
+            if (!isOwner)
+                res.data = res.data.filter((playlist) => playlist.privacy === 'public')
+
             setPlaylists(res.data);
         });
     }, [getUser]);
@@ -47,34 +52,36 @@ export default function UserPlaylist() {
     return <>
         <Stack direction="row" spacing={2}>
             {playlists.map((playlist) => {
-                return <Playlist key={playlist._id.name} playlist={playlist}/>;
+                return <Playlist key={playlist._id.name} playlist={playlist} isOwner={isOwner}/>;
             })}
         </Stack>
 
+        {isOwner && <>
+            <h1>Se vuoi aggiungere un'altra playlist:</h1>
+            <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(handleAddPlaylist)}>
+                    <Stack spacing={2}>
+                        <RHFTextField type="text" name="name" label="Nome della playlist" required/>
+                        <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
+                                         getOptionLabel={(option) => {
+                                             const artists = option.song.artists.map((artist) => {
+                                                 return artist.name;
+                                             });
+                                             return `${option.song.name} (${artists})`;
+                                         }}
+                                         isOptionEqualToValue={(option, value) => option._id === value._id}
+                                         multiple
+                                         required/>
+                        <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
+                        <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
+                        <RHFTextField type="text" name="tags" label="Tags" multiline/>
+                        <Button type="submit">Aggiungi playlist</Button>
+                    </Stack>
 
-        <h1>Se vuoi aggiungere un'altra playlist:</h1>
-        <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleAddPlaylist)}>
-                <Stack spacing={2}>
-                    <RHFTextField type="text" name="name" label="Nome della playlist" required/>
-                    <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
-                                     getOptionLabel={(option) => {
-                                         const artists = option.song.artists.map((artist) => {
-                                             return artist.name;
-                                         });
-                                         return `${option.song.name} (${artists})`;
-                                     }}
-                                     isOptionEqualToValue={(option, value) => option._id === value._id}
-                                     multiple
-                                     required/>
-                    <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
-                    <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
-                    <RHFTextField type="text" name="tags" label="Tags" multiline/>
-                    <Button type="submit">Aggiungi playlist</Button>
-                </Stack>
-
-            </form>
-        </FormProvider>
+                </form>
+            </FormProvider>
+        </>
+        }
 
     </>
 }

@@ -35,6 +35,7 @@ export default function PlaylistPreview() {
     const {user, playlistName} = useParams();
     const navigate = useNavigate();
     const [isOwner, setIsOwner] = useState(false);
+    const [avatarColor,] = useState(randomColor());
 
     useEffect(() => {
         axios.get(`${endpoints.playlists}/${user}/${playlistName}`).then(res => {
@@ -121,7 +122,7 @@ export default function PlaylistPreview() {
 
         <Stack direction="row" alignItems="center" justifyContent="stretch">
             <Avatar variant="square"
-                    sx={{bgcolor: randomColor(), height: '300px', width: '30%'}}>{playlistName.charAt(0)}</Avatar>
+                    sx={{bgcolor: avatarColor, height: '300px', width: '30%'}}>{playlistName.charAt(0)}</Avatar>
             <Stack>
                 <Typography variant="subtitle1">Playlist {playlist?.privacy}</Typography>
                 <Typography variant="h5">{playlistName}</Typography>

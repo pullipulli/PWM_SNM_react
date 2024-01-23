@@ -13,7 +13,8 @@ export const endpoints = {
     artists: '/artists',
     genres: '/genres',
     songs: '/songs',
-    playlists: '/playlist'
+    playlists: '/playlist',
+    publicPlaylists: '/publicPlaylists'
 };
 
 

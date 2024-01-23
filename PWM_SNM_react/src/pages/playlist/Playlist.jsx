@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Avatar,
     Button,
     Dialog,
@@ -7,10 +10,7 @@ import {
     DialogContent,
     DialogTitle,
     IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
+    Link,
     Stack,
     Typography
 } from "@mui/material";
@@ -23,8 +23,10 @@ import {FormProvider, useForm} from "react-hook-form";
 import {useAuthContext} from "../../context/AuthContext.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import routes from "../../utils/routes.jsx";
 import randomColor from "../../utils/randomColors.js";
+import msToMinutes from "../../utils/msToMinutes.js";
 
 export default function PlaylistPreview() {
     const {getUser} = useAuthContext();
@@ -133,14 +135,31 @@ export default function PlaylistPreview() {
         </Stack>
 
         <Typography variant="h5">Song list:</Typography>
-        <List>
-            {playlist?.songs.map((song) => <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemText primary={song.song.name}/>
-                    </ListItemButton>
-                </ListItem>
+        <Stack spacing={1}>
+            {playlist?.songs.map((song) => <Accordion key={song._id}>
+                    <AccordionSummary
+                        expandIcon={<ArrowDropDownIcon/>}
+                    >
+                        <Typography>{song.song.name}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography>
+                            Album: {song.song.album.name} ({song.song.album.release_date})
+                        </Typography>
+                        <Typography>
+                            Durata della canzone: {msToMinutes(song.song.duration_ms)}
+                        </Typography>
+                        <Typography>
+                            Autore/i: {
+                            (song.song.artists.map((artist) => artist.name))
+                        }
+                        </Typography>
+
+                        <Link target='_blank' href={song.song.preview_url}>Preview</Link>
+                    </AccordionDetails>
+                </Accordion>
             )}
-        </List>
+        </Stack>
 
 
         {isOwner && <EditButton/>}

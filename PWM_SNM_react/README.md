@@ -4,5 +4,7 @@
 2) Ricerca delle canzoni (per tipologia, autore, cantante, genere...) (modificare quindi il campo di ricerca canzoni
    appositamente)
 3) Dalla canzone poterla aggiungere ad altre playlist
-4) Documentare bene lo swagger dal backend
-5) Styling & CSS
+4) Importare le playlist pubbliche nel proprio profilo
+5) Documentare bene lo swagger dal backend
+6) Fix delle select delle canzoni che danno errore in console per colpa delle key (??)
+7) Styling & CSS

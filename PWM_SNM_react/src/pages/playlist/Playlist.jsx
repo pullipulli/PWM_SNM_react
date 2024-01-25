@@ -74,6 +74,13 @@ export default function PlaylistPreview() {
                                          });
                                          return `${option.song.name} (${artists})`;
                                      }}
+                                     renderOption={(props, option) => {
+                                         return (
+                                             <li {...props} key={option._id}>
+                                                 {option.song.name}
+                                             </li>
+                                         );
+                                     }}
                                      isOptionEqualToValue={(option, value) => option._id === value._id}
                                      multiple
                                      required/>

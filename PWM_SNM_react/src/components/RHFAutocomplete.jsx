@@ -9,7 +9,8 @@ export default function RHFAutocomplete({
                                             isOptionEqualToValue,
                                             multiple,
                                             defaultValue,
-                                            required
+                                            required,
+                                            renderOption
                                         }) {
     const {control} = useFormContext();
     return <Controller
@@ -31,6 +32,7 @@ export default function RHFAutocomplete({
                                      onBlur={onBlur}
                                      value={value || []}
                                      name={name}
+                                     renderOption={renderOption}
                                      renderInput={(params) => (
                                          <TextField
                                              {...params}

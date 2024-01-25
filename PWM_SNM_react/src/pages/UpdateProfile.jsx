@@ -88,6 +88,13 @@ export default function UpdateProfile() {
                     defaultValue={getUser()?.favouriteGenres}
                     getOptionLabel={(option) => option._id}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
+                    renderOption={(props, option) => {
+                        return (
+                            <li {...props} key={option._id}>
+                                {option._id}
+                            </li>
+                        );
+                    }}
                     label="Generi preferiti"
                     multiple
                 />
@@ -98,6 +105,13 @@ export default function UpdateProfile() {
                     defaultValue={getUser()?.favouriteArtists}
                     getOptionLabel={(option) => option.artist.name}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
+                    renderOption={(props, option) => {
+                        return (
+                            <li {...props} key={option._id}>
+                                {option.artist.name}
+                            </li>
+                        );
+                    }}
                     label="Artisti preferiti"
                     multiple
                 />

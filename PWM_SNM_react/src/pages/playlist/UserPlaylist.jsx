@@ -69,6 +69,16 @@ export default function UserPlaylist() {
                                              });
                                              return `${option.song.name} (${artists})`;
                                          }}
+                                         renderOption={(props, option) => {
+                                             const artists = option.song.artists.map((artist) => {
+                                                 return artist.name;
+                                             });
+                                             return (
+                                                 <li {...props} key={option._id}>
+                                                     {`${option.song.name} (${artists})`}
+                                                 </li>
+                                             );
+                                         }}
                                          isOptionEqualToValue={(option, value) => option._id === value._id}
                                          multiple
                                          required/>

@@ -23,7 +23,7 @@ export default function UserPlaylist() {
         data.owner = getUser()?.username;
         data.privacy = data.privacy === true ? 'public' : 'private';
 
-        await axios.post(endpoints.playlists, data);
+        await axios.post(endpoints.playlists, data, { headers: {Authorization: getUser()?.username}});
 
         window.location.reload();
     }
@@ -35,7 +35,7 @@ export default function UserPlaylist() {
     }, [isLoggedIn]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}`).then(res => {
+        axios.get(`${endpoints.playlists}/${user}`, { headers: {Authorization: getUser()?.username}}).then(res => {
             if (!isOwner)
                 res.data = res.data.filter((playlist) => playlist.privacy === 'public')
 

@@ -61,7 +61,7 @@ export default function PlaylistPreview() {
     }, [playlist]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}/${playlistName}`).then(res => {
+        axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: getUser()?.username}}).then(res => {
             setPlaylist(res.data);
             setIsOwner(res.data._id.owner === getUser()?.username);
         });
@@ -76,9 +76,10 @@ export default function PlaylistPreview() {
     const handleUpdatePlaylist = (data) => {
         data.owner = getUser()?.username;
         data.privacy = data.privacy === true ? 'public' : 'private';
-        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data).then(() => {
+        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data, { headers: {Authorization: getUser()?.username}})
+        .then(() => {
             setEditPlaylist(!editPlaylist);
-            window.location.reload();
+            navigate(routes.playlists.path + '/' + data.owner + '/' + data.name);
         });
     }
 
@@ -150,13 +151,13 @@ export default function PlaylistPreview() {
 
         delete newPlaylist['_id'];
 
-        await axios.post(endpoints.playlists, newPlaylist)
+        await axios.post(endpoints.playlists, newPlaylist, { headers: {Authorization: getUser()?.username}})
 
         navigate(routes.playlists.path + '/' + getUser()?.username);
     };
 
     const deletePlaylist = () => {
-        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`)
+        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, { headers: {Authorization: getUser()?.username}})
             .then(() => navigate(routes.playlists.path + '/' + user));
     }
 

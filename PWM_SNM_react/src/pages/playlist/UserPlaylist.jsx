@@ -52,7 +52,7 @@ export default function UserPlaylist() {
     return <>
         <Stack direction="row" spacing={2}>
             {playlists.map((playlist) => {
-                return <PlaylistPreview key={playlist._id.name} playlist={playlist} isOwner={isOwner}/>;
+                return <PlaylistPreview key={playlist._id.name} playlist={playlist}/>;
             })}
         </Stack>
 

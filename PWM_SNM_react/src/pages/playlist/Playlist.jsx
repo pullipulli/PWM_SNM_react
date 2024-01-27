@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Accordion,
     AccordionDetails,
@@ -27,10 +27,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import routes from "../../utils/routes.jsx";
 import randomColor from "../../utils/randomColors.js";
 import msToMinutes from "../../utils/msToMinutes.js";
+import CopyIcon from "@mui/icons-material/ContentCopy.js";
 
 export default function PlaylistPreview() {
-    const {getUser} = useAuthContext();
-    const [playlist, setPlaylist] = useState();
+    const {getUser, isLoggedIn} = useAuthContext();
+    const [playlist, setPlaylist] = useState({_id: {}});
     const [editPlaylist, setEditPlaylist] = useState(false);
     const methods = useForm();
     const [songs, setSongs] = useState([]);
@@ -42,9 +43,9 @@ export default function PlaylistPreview() {
     useEffect(() => {
         axios.get(`${endpoints.playlists}/${user}/${playlistName}`).then(res => {
             setPlaylist(res.data);
-            setIsOwner(res.data._id.owner === getUser().username);
+            setIsOwner(res.data._id.owner === getUser()?.username);
         });
-    }, []);
+    }, [playlistName, user]);
 
     useEffect(() => {
         axios.get(endpoints.songs).then(res => {
@@ -113,6 +114,27 @@ export default function PlaylistPreview() {
         </IconButton>;
     }
 
+    const CopyPlaylistButton = (props) => {
+        let onClick = props.onClick;
+
+        return <IconButton onClick={onClick}>
+            <CopyIcon/>
+        </IconButton>;
+    }
+
+    const onCopyClick = async () => {
+        let newPlaylist = playlist;
+
+        newPlaylist.owner = getUser()?.username;
+        newPlaylist.name = newPlaylist._id.name + " (Copy)";
+
+        delete newPlaylist['_id'];
+
+        await axios.post(endpoints.playlists, newPlaylist)
+
+        navigate(routes.playlists.path + '/' + getUser()?.username);
+    };
+
     const deletePlaylist = () => {
         axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`)
             .then(() => navigate(routes.playlists.path + '/' + user));
@@ -137,13 +159,13 @@ export default function PlaylistPreview() {
                 <Typography variant="h5">{playlistName}</Typography>
                 <Typography variant="caption">by {user}</Typography>
                 <Typography variant="caption">Descrizione: {playlist?.description}</Typography>
-                <Typography variant="caption">Tags: {'#' + playlist?.tags.join('#')}</Typography>
+                <Typography variant="caption">Tags: {'#' + playlist?.tags?.join('#')}</Typography>
             </Stack>
         </Stack>
 
         <Typography variant="h5">Song list:</Typography>
         <Stack spacing={1}>
-            {playlist?.songs.map((song) => <Accordion key={song._id}>
+            {playlist?.songs?.map((song) => <Accordion key={song._id}>
                     <AccordionSummary
                         expandIcon={<ArrowDropDownIcon/>}
                     >
@@ -168,6 +190,7 @@ export default function PlaylistPreview() {
             )}
         </Stack>
 
+        {isLoggedIn() && <CopyPlaylistButton onClick={onCopyClick}/>}
 
         {isOwner && <EditButton/>}
 

@@ -1,4 +1,5 @@
-import {Autocomplete, TextField} from "@mui/material";
+import {Autocomplete, Button, TextField, Stack} from "@mui/material";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 import {Controller, useFormContext} from "react-hook-form";
 
 export default function RHFAutocomplete({
@@ -10,9 +11,10 @@ export default function RHFAutocomplete({
                                             multiple,
                                             defaultValue,
                                             required,
-                                            renderOption
+                                            renderOption,
                                         }) {
     const {control} = useFormContext();
+
     return <Controller
         control={control}
         name={name}
@@ -20,7 +22,6 @@ export default function RHFAutocomplete({
         render={
             ({field}) => {
                 const {ref, onChange, onBlur, value, name} = field;
-                //TODO bottone seleziona tutto
                 return <Autocomplete options={options || []}
                                      getOptionLabel={getOptionLabel}
                                      multiple={multiple}
@@ -40,7 +41,7 @@ export default function RHFAutocomplete({
                                              label={label}
                                          />
                                      )}
-                />
+                    />
             }
         }
     />

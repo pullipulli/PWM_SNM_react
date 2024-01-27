@@ -28,6 +28,7 @@ import routes from "../../utils/routes.jsx";
 import randomColor from "../../utils/randomColors.js";
 import msToMinutes from "../../utils/msToMinutes.js";
 import CopyIcon from "@mui/icons-material/ContentCopy.js";
+import SearchBar from "../../components/SearchBar.jsx";
 
 export default function PlaylistPreview() {
     const {getUser, isLoggedIn} = useAuthContext();
@@ -39,6 +40,25 @@ export default function PlaylistPreview() {
     const navigate = useNavigate();
     const [isOwner, setIsOwner] = useState(false);
     const [avatarColor,] = useState(randomColor());
+    const [filteredSongs, setFilteredSongs] = useState([]);
+
+    const filterSongs = (searchInput) => {
+        searchInput = searchInput.toUpperCase();
+
+        setFilteredSongs(
+            playlist?.songs?.filter((song) => {
+                song = song.song;
+                return song.name.toUpperCase().match(searchInput) ||
+                    song.album.name.toUpperCase().match(searchInput) ||
+                    song.artists.some((artist) => artist.name.toUpperCase().match(searchInput)) ||
+                    song.artists.some((artist) => artist?.genres?.some((genre) => genre?.toUpperCase().match(searchInput)));
+            })
+        );
+    };
+
+    useEffect(() => {
+        setFilteredSongs(playlist?.songs);
+    }, [playlist]);
 
     useEffect(() => {
         axios.get(`${endpoints.playlists}/${user}/${playlistName}`).then(res => {
@@ -163,9 +183,16 @@ export default function PlaylistPreview() {
             </Stack>
         </Stack>
 
-        <Typography variant="h5">Song list:</Typography>
+        <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h5">Song list:</Typography>
+            <SearchBar filterFunction={filterSongs}
+                   placheholder="Cerca per: nome, album, genere o autore"
+                   sx={{width:'30%'}}
+            />
+        </Stack>
+        
         <Stack spacing={1}>
-            {playlist?.songs?.map((song) => <Accordion key={song._id}>
+            {filteredSongs?.map((song) => <Accordion key={song._id}>
                     <AccordionSummary
                         expandIcon={<ArrowDropDownIcon/>}
                     >
@@ -182,6 +209,13 @@ export default function PlaylistPreview() {
                             Autore/i: {
                             (song.song.artists.map((artist) => artist.name))
                         }
+                        </Typography>
+                        <Typography>
+                            Genere/i: {song.song.artists.map((artist) => {
+                                if (artist.genres === undefined || artist.genres.length === 0)
+                                    return "Generi non disponibili";
+                                return artist.genres;
+                            })}
                         </Typography>
 
                         <Link target='_blank' href={song.song.preview_url}>Preview</Link>

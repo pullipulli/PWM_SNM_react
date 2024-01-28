@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import routes from "../utils/routes.jsx";
 import {useEffect} from "react";
 import {useAuthContext} from "../context/AuthContext.jsx";
+import axios, { endpoints } from "../utils/axios.js";
 
 export default function Profile() {
     const {isLoggedIn, getUser, logout} = useAuthContext();
@@ -17,6 +18,15 @@ export default function Profile() {
     const handleUpdate = () => {
         navigate(routes.updateProfile.path);
     };
+    
+    const handleDelete = () => {
+        axios.delete(`${endpoints.users}/${getUser().username}`, { headers: {Authorization: getUser()?.username} }).then(
+            () => {
+                logout();
+                navigate(routes.login.path);
+            }
+        );
+    }
 
     const handlePlaylists = () => {
         navigate(`${routes.playlists.path}/${getUser().username}`);
@@ -46,6 +56,7 @@ export default function Profile() {
             </Stack>
         </Stack>
         <Button onClick={handleUpdate}>Voglio modificare i miei dati</Button>
+        <Button onClick={handleDelete}>Voglio eliminare il mio profilo</Button>
         <Button onClick={handlePlaylists}>Le mie playlist</Button>
     </>
 }

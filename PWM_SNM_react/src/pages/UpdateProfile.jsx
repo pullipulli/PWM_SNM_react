@@ -49,7 +49,7 @@ export default function UpdateProfile() {
 
     const onSubmit = async (data) => {
         try {
-            const res = await axios.put(`${endpoints.users}/${getUser()?.username}`, data);
+            const res = await axios.put(`${endpoints.users}/${getUser()?.username}`, data, { headers: {Authorization: getUser()?.username} });
             login(res.data);
             methods.reset();
             navigate(routes.profile.path);

@@ -40,7 +40,7 @@ export default function PlaylistPreview() {
     const {user, playlistName} = useParams();
     const navigate = useNavigate();
     const [isOwner, setIsOwner] = useState(false);
-    const [avatarColor,] = useState(randomColor());
+    const avatarColor = '#455d3b';
     const [filteredSongs, setFilteredSongs] = useState([]);
 
     const filterSongs = (searchInput) => {

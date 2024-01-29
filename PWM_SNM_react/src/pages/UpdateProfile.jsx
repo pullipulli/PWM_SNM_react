@@ -61,8 +61,8 @@ export default function UpdateProfile() {
     return <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-                <h2>Puoi aggiornare la password oppure i tuoi artisti e generi musicali preferiti! </h2>
-                <Typography variant="subtitle1">Se non vuoi aggiornare la password, semplicemente lascia i campi
+                <Typography variant="h5">Puoi aggiornare la password oppure i tuoi artisti e generi musicali preferiti! </Typography>
+                <Typography variant="h6">Se non vuoi aggiornare la password, semplicemente lascia i campi
                     relativi vuoti.</Typography>
                 <RHFTextField
                     type="password"

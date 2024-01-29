@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import routes from "../../utils/routes.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import axios, {endpoints} from "../../utils/axios.js";
-import {Button, Stack} from "@mui/material";
+import {Button, Divider, Stack, Typography} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import RHFSwitch from "../../components/RHFSwitch.jsx";
@@ -49,49 +49,50 @@ export default function UserPlaylist() {
         });
     }, []);
 
-    return <>
-        <Stack direction="row" spacing={2}>
-            {playlists.map((playlist) => {
-                return <PlaylistPreview key={playlist._id.name} playlist={playlist}/>;
-            })}
-        </Stack>
+    return <Stack spacing={3} mt={3}>
+            <Stack direction="row" spacing={2} justifyContent={"space-evenly"}>
+                {playlists.map((playlist) => {
+                    return <PlaylistPreview key={playlist._id.name} playlist={playlist}/>;
+                })}
+            </Stack>
 
-        {isOwner && <>
-            <h1>Se vuoi aggiungere un'altra playlist:</h1>
-            <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(handleAddPlaylist)}>
-                    <Stack spacing={2}>
-                        <RHFTextField type="text" name="name" label="Nome della playlist" required/>
-                        <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
-                                         getOptionLabel={(option) => {
-                                             const artists = option.song.artists.map((artist) => {
-                                                 return artist.name;
-                                             });
-                                             return `${option.song.name} (${artists})`;
-                                         }}
-                                         renderOption={(props, option) => {
-                                             const artists = option.song.artists.map((artist) => {
-                                                 return artist.name;
-                                             });
-                                             return (
-                                                 <li {...props} key={option._id}>
-                                                     {`${option.song.name} (${artists})`}
-                                                 </li>
-                                             );
-                                         }}
-                                         isOptionEqualToValue={(option, value) => option._id === value._id}
-                                         multiple
-                                         required/>
-                        <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
-                        <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
-                        <RHFTextField type="text" name="tags" label="Tags" multiline/>
-                        <Button type="submit">Aggiungi playlist</Button>
-                    </Stack>
+            <Divider/>
 
-                </form>
-            </FormProvider>
-        </>
-        }
+            {isOwner && <>
+                <Typography variant="h4">Se vuoi aggiungere un'altra playlist:</Typography>
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(handleAddPlaylist)}>
+                        <Stack spacing={2}>
+                            <RHFTextField type="text" name="name" label="Nome della playlist" required/>
+                            <RHFAutocomplete name="songs" label="Canzoni da inserire in playlist" options={songs}
+                                            getOptionLabel={(option) => {
+                                                const artists = option.song.artists.map((artist) => {
+                                                    return artist.name;
+                                                });
+                                                return `${option.song.name} (${artists})`;
+                                            }}
+                                            renderOption={(props, option) => {
+                                                const artists = option.song.artists.map((artist) => {
+                                                    return artist.name;
+                                                });
+                                                return (
+                                                    <li {...props} key={option._id}>
+                                                        {`${option.song.name} (${artists})`}
+                                                    </li>
+                                                );
+                                            }}
+                                            isOptionEqualToValue={(option, value) => option._id === value._id}
+                                            multiple
+                                            required/>
+                            <RHFTextField type="text" name="description" label="Descrizione della playlist" multiline/>
+                            <RHFSwitch labelOff="private" labelOn="public" name="privacy" label="prova"/>
+                            <RHFTextField type="text" name="tags" label="Tags" multiline/>
+                            <Button type="submit">Aggiungi playlist</Button>
+                        </Stack>
 
-    </>
+                    </form>
+                </FormProvider>
+            </>
+            }
+        </Stack>;
 }

@@ -9,6 +9,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Divider,
     IconButton,
     Link,
     Stack,
@@ -121,26 +122,34 @@ export default function PlaylistPreview() {
     const EditButton = (props) => {
         const privacy = playlist.privacy === 'public';
 
-        return <IconButton onClick={() => {
-            methods.reset({
-                name: playlist._id.name,
-                songs: playlist.songs,
-                description: playlist.description,
-                privacy: privacy,
-                tags: "#" + playlist.tags.join("#"),
-            });
-            setEditPlaylist(!editPlaylist)
-        }}>
-            <EditIcon/>
-        </IconButton>;
+        return <Stack direction='row' alignItems={'center'}>
+            <IconButton onClick={() => {
+                methods.reset({
+                    name: playlist._id.name,
+                    songs: playlist.songs,
+                    description: playlist.description,
+                    privacy: privacy,
+                    tags: "#" + playlist.tags.join("#"),
+                });
+                setEditPlaylist(!editPlaylist)
+            }}>
+                <EditIcon/>
+            </IconButton>
+
+            <Typography variant="button">Modifica Playlist</Typography>
+        </Stack>;
     }
 
     const CopyPlaylistButton = (props) => {
         let onClick = props.onClick;
 
-        return <IconButton onClick={onClick}>
-            <CopyIcon/>
-        </IconButton>;
+        return <Stack direction='row' alignItems={'center'}>
+            <IconButton onClick={onClick}>
+                <CopyIcon/>
+            </IconButton>
+
+            <Typography variant="button">Copia Playlist</Typography>
+        </Stack>;
     }
 
     const onCopyClick = async () => {
@@ -172,22 +181,39 @@ export default function PlaylistPreview() {
             </DialogContent>
         </Dialog>
 
-        <Stack direction="row" alignItems="center" justifyContent="stretch">
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mt={2}>
             <Avatar variant="square"
                     sx={{bgcolor: avatarColor, height: '300px', width: '30%'}}>{playlistName.charAt(0)}</Avatar>
-            <Stack>
-                <Typography variant="subtitle1">Playlist {playlist?.privacy}</Typography>
+            <Stack alignItems='start' spacing={1}>
+                <Typography variant="h4">Playlist {playlist?.privacy}</Typography>
+                <Divider flexItem/>
                 <Typography variant="h5">{playlistName}</Typography>
-                <Typography variant="caption">by {user}</Typography>
-                <Typography variant="caption">Descrizione: {playlist?.description}</Typography>
-                <Typography variant="caption">Tags: {'#' + playlist?.tags?.join('#')}</Typography>
+                <Typography variant="h6">by {user}</Typography>
+                <Typography variant="h6">Descrizione: {playlist?.description}</Typography>
+                <Typography variant="h6">Tags: {'#' + playlist?.tags?.join('#')}</Typography>
+            </Stack>
+
+            <Divider orientation="vertical" flexItem/>
+
+            <Stack spacing={1}>
+                {isLoggedIn() && <CopyPlaylistButton onClick={onCopyClick}/>}
+
+                {isOwner && <EditButton/>}
+
+                {isOwner && <Stack direction='row' alignItems={'center'}>
+                    <IconButton onClick={deletePlaylist}>
+                        <DeleteIcon sx={{color: "red"}}/>
+                    </IconButton>
+
+                    <Typography variant="button">Elimina Playlist</Typography>
+                </Stack>}
             </Stack>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between" my={1}>
             <Typography variant="h5">Song list:</Typography>
             <SearchBar filterFunction={filterSongs}
-                   placheholder="Cerca per: nome, album, genere o autore"
+                   placeholder="Cerca per: nome, album, genere o autore"
                    sx={{width:'30%'}}
             />
         </Stack>
@@ -224,13 +250,5 @@ export default function PlaylistPreview() {
                 </Accordion>
             )}
         </Stack>
-
-        {isLoggedIn() && <CopyPlaylistButton onClick={onCopyClick}/>}
-
-        {isOwner && <EditButton/>}
-
-        {isOwner && <IconButton onClick={deletePlaylist}>
-            <DeleteIcon sx={{color: "red"}}/>
-        </IconButton>}
     </>;
 }

@@ -22,7 +22,7 @@ function App() {
                 main: '#1e9ab6'
             },
             background: {
-                paper: '#b6ecfa'
+                paper: '#c3e9c5'
             },
         }
     });

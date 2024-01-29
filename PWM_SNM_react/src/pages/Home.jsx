@@ -32,9 +32,9 @@ export default function Home() {
 
 
     return <>
-        <SearchBar filterFunction={filterPlaylist}
-                   placheholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
-        <Stack spacing={3}>
+        <SearchBar filterFunction={filterPlaylist} sx={{mt:2}}
+                   placeholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
+        <Stack spacing={3} direction='row' mt={2}>
             {filteredPlaylists?.map((playlist, index) => <PlaylistPreview key={index} playlist={playlist}/>)}
         </Stack>
     </>;

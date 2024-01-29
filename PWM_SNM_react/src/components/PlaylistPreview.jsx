@@ -7,7 +7,7 @@ export default function PlaylistPreview({playlist}) {
     const navigate = useNavigate();
 
     return <>
-        <Card>
+        <Card sx={{width: 300, padding: 4, borderRadius: '10px'}}>
             <Typography variant="h5">{playlist._id.name}</Typography>
             <Typography variant="caption">by {playlist._id.owner}</Typography>
             <Typography variant="body1">{playlist.description}</Typography>

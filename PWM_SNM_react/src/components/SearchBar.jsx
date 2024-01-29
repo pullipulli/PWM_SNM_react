@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {Input} from "@mui/material";
 
-export default function SearchBar({filterFunction, placheholder = "Search...", ...other}) {
+export default function SearchBar({filterFunction, placeholder = "Search...", ...other}) {
     const [searchInput, setSearchInput] = useState("");
 
     const handleChange = (e) => {
@@ -16,7 +16,7 @@ export default function SearchBar({filterFunction, placheholder = "Search...", .
     return <Input
         {...other}
         type="text"
-        placeholder={placheholder}
+        placeholder={placeholder}
         onChange={handleChange}
         value={searchInput}
         fullWidth

@@ -13,7 +13,7 @@ export default function PlaylistPreview({playlist}) {
             <Typography variant="body1">{playlist.description}</Typography>
 
             <IconButton
-                onClick={() => navigate(`${routes.playlists.path}/${playlist?._id.owner}/${playlist?._id.name}`)}>
+                onClick={() => navigate(`${routes.playlists.path}/${playlist._id.owner}/${playlist._id.name}`)}>
                 <OpenInFullIcon/>
             </IconButton>
         </Card>

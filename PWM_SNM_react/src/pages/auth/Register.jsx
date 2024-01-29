@@ -2,7 +2,7 @@ import axios, {endpoints} from "../../utils/axios.js";
 import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
-import {Button, Divider, Stack} from "@mui/material";
+import {Button, Divider, Stack, Typography} from "@mui/material";
 import RHFAutocomplete from "../../components/RHFAutocomplete.jsx";
 import {useNavigate} from "react-router-dom";
 import routes from "../../utils/routes.jsx";
@@ -114,7 +114,7 @@ export default function Register() {
                 </form>
             </FormProvider>
 
-            {error && <div>{error}</div>}
+            {error && <Typography variant="caption">{error}</Typography>}
         </div>
     );
 }

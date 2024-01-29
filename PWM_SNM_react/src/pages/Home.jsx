@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios, {endpoints} from "../utils/axios.js";
 import PlaylistPreview from "../components/PlaylistPreview.jsx";
-import {Grid, Stack} from "@mui/material";
+import {Grid, Stack, Typography} from "@mui/material";
 import SearchBar from "../components/SearchBar.jsx";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
     const filterPlaylist = (searchInput) => {
         searchInput = searchInput.toUpperCase();
         setFilteredPlaylists(
-            playlists?.filter((playlist) => {
+            playlists.filter((playlist) => {
                 return playlist._id.name.toUpperCase().match(searchInput) ||
                     playlist._id.owner.toUpperCase().match(searchInput) ||
                     playlist.tags.some((tag) => tag.toUpperCase().match(searchInput)) ||
@@ -35,9 +35,9 @@ export default function Home() {
         <SearchBar filterFunction={filterPlaylist} sx={{mt:2}}
                    placeholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
         <Grid container spacing={3} columns={3} mt={2}>
-            {filteredPlaylists?.map((playlist, index) => <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
+            {(playlists.length !== 0 && filteredPlaylists.map((playlist, index) => <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
                     <PlaylistPreview key={index} playlist={playlist}/>
-                </Grid>)}
+                </Grid>)) || <Typography variant="caption">Playlist pubbliche in caricamento. Attendere...</Typography>}
         </Grid>
     </>;
 }

@@ -23,7 +23,7 @@ export default function NavBar() {
                 {!isLoggedIn() &&
                     <Typography className="link" variant="button" component={NavLink} to={routes.register.path}>Register</Typography>}
                 {isLoggedIn() &&
-                    <Typography className="link" variant="button" component={NavLink} to={routes.profile.path}>Profile ({getUser()?.username})</Typography>}
+                    <Typography className="link" variant="button" component={NavLink} to={routes.profile.path}>Profile ({getUser().username})</Typography>}
                 {isLoggedIn() &&
                     <IconButton variant="contained" onClick={handleLogout}>
                         <LogoutIcon sx={{color: 'white'}}/>

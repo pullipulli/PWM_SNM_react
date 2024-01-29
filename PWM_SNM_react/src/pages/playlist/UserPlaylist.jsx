@@ -17,13 +17,13 @@ export default function UserPlaylist() {
     const [songs, setSongs] = useState([]);
     const methods = useForm();
     const {user} = useParams();
-    const isOwner = user === getUser()?.username;
+    const isOwner = user === getUser().username;
 
     const handleAddPlaylist = async (data) => {
-        data.owner = getUser()?.username;
+        data.owner = getUser().username;
         data.privacy = data.privacy === true ? 'public' : 'private';
 
-        await axios.post(endpoints.playlists, data, { headers: {Authorization: getUser()?.username}});
+        await axios.post(endpoints.playlists, data, { headers: {Authorization: getUser().username}});
 
         window.location.reload();
     }
@@ -35,7 +35,7 @@ export default function UserPlaylist() {
     }, [isLoggedIn]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}`, { headers: {Authorization: getUser()?.username}}).then(res => {
+        axios.get(`${endpoints.playlists}/${user}`, { headers: {Authorization: getUser().username}}).then(res => {
             if (!isOwner)
                 res.data = res.data.filter((playlist) => playlist.privacy === 'public')
 
@@ -51,11 +51,11 @@ export default function UserPlaylist() {
 
     return <Stack spacing={3} mt={3}>
             <Grid container spacing={3} columns={3}>
-                {playlists.map((playlist) => {
+                {(playlists.length !== 0 && playlists.map((playlist) => {
                     return <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
                         <PlaylistPreview playlist={playlist}/>
                     </Grid>;
-                })}
+                })) || <Typography variant='caption'>Playlist dell'utente in caricamento. Attendere...</Typography>}
             </Grid>
 
             <Divider/>

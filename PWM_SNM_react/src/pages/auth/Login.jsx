@@ -1,7 +1,7 @@
 import axios, {endpoints} from "../../utils/axios.js";
 import {useEffect, useState} from "react";
 import {FormProvider, useForm} from "react-hook-form";
-import {Box, Button, Divider, Stack} from "@mui/material";
+import {Box, Button, Divider, Stack, Typography} from "@mui/material";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import {useNavigate} from "react-router-dom";
 import routes from "../../utils/routes.jsx";
@@ -66,7 +66,7 @@ export default function Login() {
                 </Box>
             </FormProvider>
 
-            {error && <div>Username o password errati</div>}
+            {error && <Typography variant="caption">Username o password errati</Typography>}
         </div>
     );
 }

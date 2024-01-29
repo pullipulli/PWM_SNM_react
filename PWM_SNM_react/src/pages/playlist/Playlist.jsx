@@ -27,14 +27,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import routes from "../../utils/routes.jsx";
-import randomColor from "../../utils/randomColors.js";
 import msToMinutes from "../../utils/msToMinutes.js";
 import CopyIcon from "@mui/icons-material/ContentCopy.js";
 import SearchBar from "../../components/SearchBar.jsx";
 
 export default function PlaylistPreview() {
     const {getUser, isLoggedIn} = useAuthContext();
-    const [playlist, setPlaylist] = useState({_id: {}});
+    const [playlist, setPlaylist] = useState({_id: {name: 'Attendere...', owner: 'Attendere...'}, tags: [], songs: [], description: 'Attendere...', privacy: 'Attendere...'});
     const [editPlaylist, setEditPlaylist] = useState(false);
     const methods = useForm();
     const [songs, setSongs] = useState([]);
@@ -48,24 +47,24 @@ export default function PlaylistPreview() {
         searchInput = searchInput.toUpperCase();
 
         setFilteredSongs(
-            playlist?.songs?.filter((song) => {
+            playlist.songs.filter((song) => {
                 song = song.song;
                 return song.name.toUpperCase().match(searchInput) ||
                     song.album.name.toUpperCase().match(searchInput) ||
                     song.artists.some((artist) => artist.name.toUpperCase().match(searchInput)) ||
-                    song.artists.some((artist) => artist?.genres?.some((genre) => genre?.toUpperCase().match(searchInput)));
+                    song.artists.some((artist) => artist.genres.some((genre) => genre.toUpperCase().match(searchInput)));
             })
         );
     };
 
     useEffect(() => {
-        setFilteredSongs(playlist?.songs);
+        setFilteredSongs(playlist.songs);
     }, [playlist]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: getUser()?.username}}).then(res => {
+        axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: getUser().username}}).then(res => {
             setPlaylist(res.data);
-            setIsOwner(res.data._id.owner === getUser()?.username);
+            setIsOwner(res.data._id.owner === getUser().username);
         });
     }, [playlistName, user]);
 
@@ -76,9 +75,9 @@ export default function PlaylistPreview() {
     }, []);
 
     const handleUpdatePlaylist = (data) => {
-        data.owner = getUser()?.username;
+        data.owner = getUser().username;
         data.privacy = data.privacy === true ? 'public' : 'private';
-        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data, { headers: {Authorization: getUser()?.username}})
+        axios.put(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, data, { headers: {Authorization: getUser().username}})
         .then(() => {
             setEditPlaylist(!editPlaylist);
             navigate(routes.playlists.path + '/' + data.owner + '/' + data.name);
@@ -156,18 +155,18 @@ export default function PlaylistPreview() {
     const onCopyClick = async () => {
         let newPlaylist = playlist;
 
-        newPlaylist.owner = getUser()?.username;
+        newPlaylist.owner = getUser().username;
         newPlaylist.name = newPlaylist._id.name + " (Copy)";
 
         delete newPlaylist['_id'];
 
-        await axios.post(endpoints.playlists, newPlaylist, { headers: {Authorization: getUser()?.username}})
+        await axios.post(endpoints.playlists, newPlaylist, { headers: {Authorization: getUser().username}})
 
-        navigate(routes.playlists.path + '/' + getUser()?.username);
+        navigate(routes.playlists.path + '/' + getUser().username);
     };
 
     const deletePlaylist = () => {
-        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, { headers: {Authorization: getUser()?.username}})
+        axios.delete(`${endpoints.playlists}/${playlist._id.owner}/${playlist._id.name}`, { headers: {Authorization: getUser().username}})
             .then(() => navigate(routes.playlists.path + '/' + user));
     }
 
@@ -186,12 +185,12 @@ export default function PlaylistPreview() {
             <Avatar variant="square"
                     sx={{bgcolor: avatarColor, height: '300px', width: '30%'}}>{playlistName.charAt(0)}</Avatar>
             <Stack alignItems='start' spacing={1}>
-                <Typography variant="h4">Playlist {playlist?.privacy}</Typography>
+                <Typography variant="h4">Playlist {playlist.privacy}</Typography>
                 <Divider flexItem/>
                 <Typography variant="h5">{playlistName}</Typography>
                 <Typography variant="h6">by {user}</Typography>
-                <Typography variant="h6">Descrizione: {playlist?.description}</Typography>
-                <Typography variant="h6">Tags: {'#' + playlist?.tags?.join('#')}</Typography>
+                <Typography variant="h6">Descrizione: {playlist.description}</Typography>
+                <Typography variant="h6">Tags: {'#' + playlist.tags.join('#')}</Typography>
             </Stack>
 
             <Divider orientation="vertical" flexItem/>
@@ -223,7 +222,7 @@ export default function PlaylistPreview() {
         </Grid>
         
         <Stack spacing={1}>
-            {filteredSongs?.map((song) => <Accordion key={song._id}>
+            {(playlist.songs.length !== 0 && filteredSongs.map((song) => <Accordion key={song._id}>
                     <AccordionSummary
                         expandIcon={<ArrowDropDownIcon/>}
                     >
@@ -252,7 +251,7 @@ export default function PlaylistPreview() {
                         <Link target='_blank' href={song.song.preview_url}>Preview</Link>
                     </AccordionDetails>
                 </Accordion>
-            )}
+            )) || <Typography variant="caption">Playlist in caricamento. Attendere...</Typography>}
         </Stack>
     </>;
 }

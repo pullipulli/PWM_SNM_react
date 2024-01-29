@@ -22,6 +22,19 @@ export default function UpdateProfile() {
         }
     });
 
+    let user = {
+        username: 'user',
+        name: 'name',
+        surname: 'surname',
+        email: 'email',
+        favouriteArtists: [],
+        favouriteGenres: []
+    };
+
+    if (getUser())
+        user = getUser();
+
+
     useEffect(() => {
         axios.get(endpoints.genres).then((data) => {
             setGenres(data.data);
@@ -36,8 +49,8 @@ export default function UpdateProfile() {
 
     useEffect(() => {
         methods.reset({
-                favouriteGenres: getUser()?.favouriteGenres,
-                favouriteArtists: getUser()?.favouriteArtists
+                favouriteGenres: user.favouriteGenres,
+                favouriteArtists: user.favouriteArtists
             }
         );
     }, [genres, artists]);
@@ -49,7 +62,7 @@ export default function UpdateProfile() {
 
     const onSubmit = async (data) => {
         try {
-            const res = await axios.put(`${endpoints.users}/${getUser()?.username}`, data, { headers: {Authorization: getUser()?.username} });
+            const res = await axios.put(`${endpoints.users}/${user.username}`, data, { headers: {Authorization: user.username} });
             login(res.data);
             methods.reset();
             navigate(routes.profile.path);
@@ -85,7 +98,7 @@ export default function UpdateProfile() {
                 <RHFAutocomplete
                     name="favouriteGenres"
                     options={genres}
-                    defaultValue={getUser()?.favouriteGenres}
+                    defaultValue={user.favouriteGenres}
                     getOptionLabel={(option) => option._id}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
                     renderOption={(props, option) => {
@@ -102,7 +115,7 @@ export default function UpdateProfile() {
                 <RHFAutocomplete
                     name="favouriteArtists"
                     options={artists}
-                    defaultValue={getUser()?.favouriteArtists}
+                    defaultValue={user.favouriteArtists}
                     getOptionLabel={(option) => option.artist.name}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
                     renderOption={(props, option) => {

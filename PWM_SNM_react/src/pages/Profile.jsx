@@ -9,6 +9,18 @@ export default function Profile() {
     const {isLoggedIn, getUser, logout} = useAuthContext();
     const navigate = useNavigate();
 
+    let user = {
+        username: 'user',
+        name: 'name',
+        surname: 'surname',
+        email: 'email',
+        favouriteArtists: [],
+        favouriteGenres: []
+    };
+
+    if (getUser())
+        user = getUser();
+
     useEffect(() => {
         if (!isLoggedIn()) {
             navigate(routes.login.path);
@@ -20,7 +32,7 @@ export default function Profile() {
     };
     
     const handleDelete = () => {
-        axios.delete(`${endpoints.users}/${getUser().username}`, { headers: {Authorization: getUser()?.username} }).then(
+        axios.delete(`${endpoints.users}/${user.username}`, { headers: {Authorization: user.username} }).then(
             () => {
                 logout();
                 navigate(routes.login.path);
@@ -29,7 +41,7 @@ export default function Profile() {
     }
 
     const handlePlaylists = () => {
-        navigate(`${routes.playlists.path}/${getUser().username}`);
+        navigate(`${routes.playlists.path}/${user.username}`);
     }
 
 
@@ -41,7 +53,7 @@ export default function Profile() {
                         <Typography variant="h5">Nome utente</Typography>
                     </TableCell>
                     <TableCell>
-                        <Typography variant='h6'>{getUser().username}</Typography>
+                        <Typography variant='h6'>{user.username}</Typography>
                     </TableCell>
                 </TableRow>
 
@@ -50,7 +62,7 @@ export default function Profile() {
                         <Typography variant="h5">Nome</Typography>
                     </TableCell>
                     <TableCell>
-                        <Typography variant='h6'>{getUser().name}</Typography>
+                        <Typography variant='h6'>{user.name}</Typography>
                     </TableCell>
                 </TableRow>
 
@@ -59,7 +71,7 @@ export default function Profile() {
                         <Typography variant="h5">Cognome</Typography>
                     </TableCell>
                     <TableCell>
-                        <Typography variant='h6'>{getUser().surname}</Typography>
+                        <Typography variant='h6'>{user.surname}</Typography>
                     </TableCell>
                 </TableRow>
 
@@ -68,7 +80,7 @@ export default function Profile() {
                         <Typography variant="h5">Email</Typography>
                     </TableCell>
                     <TableCell>
-                        <Typography variant='h6'>{getUser().email}</Typography>
+                        <Typography variant='h6'>{user.email}</Typography>
                     </TableCell>
                 </TableRow>
 
@@ -77,7 +89,7 @@ export default function Profile() {
                         <Typography variant="h5">Generi preferiti </Typography>
                     </TableCell>
                     <TableCell>
-                            {getUser().favouriteGenres.map((genre, index, genres) => {
+                            {user.favouriteGenres.map((genre, index, genres) => {
                                 let output = genre._id;
                                 if(index !== genres.length - 1)
                                     output += ', '
@@ -106,6 +118,5 @@ export default function Profile() {
             <Button onClick={handleDelete}>Voglio eliminare il mio profilo</Button>
             <Button onClick={handlePlaylists}>Le mie playlist</Button>
         </Stack>
-        
     </>
 }

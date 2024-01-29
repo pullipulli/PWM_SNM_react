@@ -26,7 +26,7 @@ export default function NavBar() {
                     <Typography className="link" variant="button" component={NavLink} to={routes.profile.path}>Profile ({getUser().username})</Typography>}
                 {isLoggedIn() &&
                     <IconButton variant="contained" onClick={handleLogout}>
-                        <LogoutIcon sx={{color: 'white'}}/>
+                        <LogoutIcon className="icon"/>
                     </IconButton>}
             </Stack>
         </Container>

@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import axios, {endpoints} from "../utils/axios.js";
 import PlaylistPreview from "../components/PlaylistPreview.jsx";
-import {Grid, Stack, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import SearchBar from "../components/SearchBar.jsx";
+import "./style/Home.css";
 
 export default function Home() {
     const [playlists, setPlaylists] = useState([]);
@@ -32,9 +33,9 @@ export default function Home() {
 
 
     return <>
-        <SearchBar filterFunction={filterPlaylist} sx={{mt:2}}
+        <SearchBar filterFunction={filterPlaylist} className='searchBar'
                    placeholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
-        <Grid container spacing={3} columns={3} mt={2}>
+        <Grid container spacing={3} columns={3} className="playlistContainer">
             {(playlists.length !== 0 && filteredPlaylists.map((playlist, index) => <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
                     <PlaylistPreview key={index} playlist={playlist}/>
                 </Grid>)) || <Typography variant="caption">Playlist pubbliche in caricamento. Attendere...</Typography>}

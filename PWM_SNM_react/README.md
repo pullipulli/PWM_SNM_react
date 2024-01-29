@@ -1,4 +1,3 @@
-# Funzionalità ancora da implementare
+# Relazione
 
-1) Refactoring in file a parte del CSS dove possibile
-2) Relazione
+Qui ci sarà la relazione prima di essere convertita in PDF per la consegna

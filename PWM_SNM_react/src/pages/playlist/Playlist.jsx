@@ -30,6 +30,7 @@ import routes from "../../utils/routes.jsx";
 import msToMinutes from "../../utils/msToMinutes.js";
 import CopyIcon from "@mui/icons-material/ContentCopy.js";
 import SearchBar from "../../components/SearchBar.jsx";
+import "./style/Playlist.css";
 
 export default function PlaylistPreview() {
     const {getUser, isLoggedIn} = useAuthContext();
@@ -40,7 +41,6 @@ export default function PlaylistPreview() {
     const {user, playlistName} = useParams();
     const navigate = useNavigate();
     const [isOwner, setIsOwner] = useState(false);
-    const avatarColor = '#455d3b';
     const [filteredSongs, setFilteredSongs] = useState([]);
 
     const filterSongs = (searchInput) => {
@@ -122,7 +122,7 @@ export default function PlaylistPreview() {
     const EditButton = (props) => {
         const privacy = playlist.privacy === 'public';
 
-        return <Stack direction='row' alignItems={'center'}>
+        return <Stack direction='row' alignItems='center'>
             <IconButton onClick={() => {
                 methods.reset({
                     name: playlist._id.name,
@@ -143,7 +143,7 @@ export default function PlaylistPreview() {
     const CopyPlaylistButton = (props) => {
         let onClick = props.onClick;
 
-        return <Stack direction='row' alignItems={'center'}>
+        return <Stack direction='row' alignItems='center'>
             <IconButton onClick={onClick}>
                 <CopyIcon/>
             </IconButton>
@@ -182,8 +182,7 @@ export default function PlaylistPreview() {
         </Dialog>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mt={2}>
-            <Avatar variant="square"
-                    sx={{bgcolor: avatarColor, height: '300px', width: '30%'}}>{playlistName.charAt(0)}</Avatar>
+            <Avatar variant="square" className="avatar">{playlistName.charAt(0)}</Avatar>
             <Stack alignItems='start' spacing={1}>
                 <Typography variant="h4">Playlist {playlist.privacy}</Typography>
                 <Divider flexItem/>
@@ -202,7 +201,7 @@ export default function PlaylistPreview() {
 
                 {isOwner && <Stack direction='row' alignItems={'center'}>
                     <IconButton onClick={deletePlaylist}>
-                        <DeleteIcon sx={{color: "red"}}/>
+                        <DeleteIcon className="trash"/>
                     </IconButton>
 
                     <Typography variant="button">Elimina Playlist</Typography>
@@ -223,22 +222,23 @@ export default function PlaylistPreview() {
         
         <Stack spacing={1}>
             {(playlist.songs.length !== 0 && filteredSongs.map((song) => <Accordion key={song._id}>
-                    <AccordionSummary
-                        expandIcon={<ArrowDropDownIcon/>}
-                    >
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon/>}>
                         <Typography>{song.song.name}</Typography>
                     </AccordionSummary>
+
                     <AccordionDetails>
                         <Typography>
                             Album: {song.song.album.name} ({song.song.album.release_date})
                         </Typography>
+
                         <Typography>
                             Durata della canzone: {msToMinutes(song.song.duration_ms)}
                         </Typography>
+
                         <Typography>
                             Autore/i: {
                             (song.song.artists.map((artist) => artist.name))
-                        }
+                            }
                         </Typography>
                         <Typography>
                             Genere/i: {song.song.artists.map((artist) => {

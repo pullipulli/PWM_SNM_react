@@ -113,7 +113,7 @@ export default function Profile() {
                 </TableRow>
             </TableBody>
         </Table>
-        <Stack direction='row'>
+        <Stack direction={{sm: 'column', md: 'row'}}>
             <Button onClick={handleUpdate}>Voglio modificare i miei dati</Button>
             <Button onClick={handleDelete}>Voglio eliminare il mio profilo</Button>
             <Button onClick={handlePlaylists}>Le mie playlist</Button>

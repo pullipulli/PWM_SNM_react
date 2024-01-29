@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import routes from "../../utils/routes.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import axios, {endpoints} from "../../utils/axios.js";
-import {Button, Divider, Stack, Typography} from "@mui/material";
+import {Button, Divider, Grid, Stack, Typography} from "@mui/material";
 import {FormProvider, useForm} from "react-hook-form";
 import RHFTextField from "../../components/RHFTextField.jsx";
 import RHFSwitch from "../../components/RHFSwitch.jsx";
@@ -50,11 +50,13 @@ export default function UserPlaylist() {
     }, []);
 
     return <Stack spacing={3} mt={3}>
-            <Stack direction="row" spacing={2} justifyContent={"space-evenly"}>
+            <Grid container spacing={3} columns={3}>
                 {playlists.map((playlist) => {
-                    return <PlaylistPreview key={playlist._id.name} playlist={playlist}/>;
+                    return <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
+                        <PlaylistPreview playlist={playlist}/>
+                    </Grid>;
                 })}
-            </Stack>
+            </Grid>
 
             <Divider/>
 

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios, {endpoints} from "../utils/axios.js";
 import PlaylistPreview from "../components/PlaylistPreview.jsx";
-import {Stack} from "@mui/material";
+import {Grid, Stack} from "@mui/material";
 import SearchBar from "../components/SearchBar.jsx";
 
 export default function Home() {
@@ -34,8 +34,10 @@ export default function Home() {
     return <>
         <SearchBar filterFunction={filterPlaylist} sx={{mt:2}}
                    placeholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
-        <Stack spacing={3} direction='row' mt={2}>
-            {filteredPlaylists?.map((playlist, index) => <PlaylistPreview key={index} playlist={playlist}/>)}
-        </Stack>
+        <Grid container spacing={3} columns={3} mt={2}>
+            {filteredPlaylists?.map((playlist, index) => <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
+                    <PlaylistPreview key={index} playlist={playlist}/>
+                </Grid>)}
+        </Grid>
     </>;
 }

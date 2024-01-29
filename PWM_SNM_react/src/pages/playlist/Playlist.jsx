@@ -13,7 +13,8 @@ import {
     IconButton,
     Link,
     Stack,
-    Typography
+    Typography,
+    Grid
 } from "@mui/material";
 import axios, {endpoints} from "../../utils/axios.js";
 import EditIcon from '@mui/icons-material/Edit';
@@ -210,13 +211,16 @@ export default function PlaylistPreview() {
             </Stack>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between" my={1}>
-            <Typography variant="h5">Song list:</Typography>
-            <SearchBar filterFunction={filterSongs}
-                   placeholder="Cerca per: nome, album, genere o autore"
-                   sx={{width:'30%'}}
-            />
-        </Stack>
+        <Grid container columns={3} my={1} justifyContent={"space-between"}>
+            <Grid item xs={3} sm={1}>
+                <Typography variant="h5">Song list:</Typography>
+            </Grid>
+            <Grid item xs={3} sm={1}>
+                <SearchBar filterFunction={filterSongs}
+                    placeholder="Cerca per: nome, album, genere o autore"
+                />
+            </Grid>
+        </Grid>
         
         <Stack spacing={1}>
             {filteredSongs?.map((song) => <Accordion key={song._id}>

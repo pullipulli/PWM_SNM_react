@@ -53,37 +53,37 @@ export default function Register() {
 
                         <RHFTextField
                             type="email"
-                            label="email"
+                            label="E-mail"
                             name="email"
                         />
 
                         <RHFTextField
                             type="text"
-                            label="name"
+                            label="Nome"
                             name="name"
                         />
 
                         <RHFTextField
                             type="text"
-                            label="surname"
+                            label="Cognome"
                             name="surname"
                         />
 
                         <RHFTextField
                             type="text"
-                            label="username"
+                            label="Username"
                             name="username"
                         />
 
                         <RHFTextField
                             type="password"
-                            label="password"
+                            label="Password"
                             name="password"
                         />
 
                         <RHFTextField
                             type="password"
-                            label="password1"
+                            label="Conferma Password"
                             name="password1"
                         />
 

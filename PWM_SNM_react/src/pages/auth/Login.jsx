@@ -46,13 +46,13 @@ export default function Login() {
 
                         <RHFTextField
                             name="username"
-                            label="username"
+                            label="Username"
                             type="text"
                         />
 
                         <RHFTextField
                             name="password"
-                            label="password"
+                            label="Password"
                             type="password"
                         />
 

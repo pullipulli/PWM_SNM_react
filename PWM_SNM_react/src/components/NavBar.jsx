@@ -1,11 +1,12 @@
 import {NavLink, useNavigate} from "react-router-dom";
-import {AppBar, Button, Container, Stack, Typography} from "@mui/material";
+import {AppBar, Container, IconButton, Stack, Typography} from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
 import routes from "../utils/routes.jsx";
 import {useAuthContext} from "../context/AuthContext.jsx";
-
+import "./style/NavBarStyle.css";
 
 export default function NavBar() {
-    const {isLoggedIn, logout} = useAuthContext();
+    const {isLoggedIn, logout, getUser} = useAuthContext();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -16,17 +17,17 @@ export default function NavBar() {
     return <AppBar position="static">
         <Container maxWidth="xl">
             <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h6" component={NavLink} to={routes.root.path}>Home</Typography>
+                <Typography className="link" variant="button" component={NavLink} to={routes.root.path}>Home</Typography>
                 {!isLoggedIn() &&
-                    <Typography variant="h6" component={NavLink} to={routes.login.path}>Login</Typography>}
+                    <Typography className="link" variant="button" component={NavLink} to={routes.login.path}>Login</Typography>}
                 {!isLoggedIn() &&
-                    <Typography variant="h6" component={NavLink} to={routes.register.path}>Register</Typography>}
+                    <Typography className="link" variant="button" component={NavLink} to={routes.register.path}>Register</Typography>}
                 {isLoggedIn() &&
-                    <Typography variant="h6" component={NavLink} to={routes.profile.path}>Profile</Typography>}
+                    <Typography className="link" variant="button" component={NavLink} to={routes.profile.path}>Profile ({getUser()?.username})</Typography>}
                 {isLoggedIn() &&
-                    <Button variant="contained" onClick={handleLogout}>
-                        <Typography variant="h6">Logout</Typography>
-                    </Button>}
+                    <IconButton variant="contained" onClick={handleLogout}>
+                        <LogoutIcon/>
+                    </IconButton>}
             </Stack>
         </Container>
     </AppBar>

@@ -1,0 +1,9 @@
+.link {
+    color: aliceblue;
+    text-decoration: none;
+    align-self: center;
+}
+
+.link:hover {
+    color: black;
+}

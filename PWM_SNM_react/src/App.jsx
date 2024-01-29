@@ -7,24 +7,45 @@ import {routesArray} from "./utils/routes.jsx";
 import {useAuth} from "./hooks/useAuth.jsx";
 import {AuthContext} from "./context/AuthContext.jsx";
 import { Container } from '@mui/material';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 
 function App() {
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#1eb639'
+            },
+            secondary: {
+                main: '#b61e9a'
+            },
+            info: {
+                main: '#1e9ab6'
+            },
+            background: {
+                paper: '#b6ecfa'
+            },
+        }
+    });
+
+
     return (
         <>
-            <AuthContext.Provider value={useAuth()}>
-                <NavBar/>
-                <Container>
-                    <Suspense fallback={<div className="container">Loading...</div>}>
-                        <Routes>
-                            {routesArray.map((route) => {
-                                    return <Route key={route.path} path={route.path} element={route.element}/>
-                                }
-                            )}
-                        </Routes>
-                    </Suspense>
-                </Container>
-                
-            </AuthContext.Provider>
+            <ThemeProvider theme={theme}>
+                <AuthContext.Provider value={useAuth()}>
+                    <NavBar/>
+                    <Container>
+                        <Suspense fallback={<div className="container">Loading...</div>}>
+                            <Routes>
+                                {routesArray.map((route) => {
+                                        return <Route key={route.path} path={route.path} element={route.element}/>
+                                    }
+                                )}
+                            </Routes>
+                        </Suspense>
+                    </Container>
+                    
+                </AuthContext.Provider>
+            </ThemeProvider>
         </>
     )
 }

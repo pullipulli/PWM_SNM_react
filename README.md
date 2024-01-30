@@ -173,3 +173,14 @@ Tutte le route vengono descritte in dettaglio [qui](http://127.0.0.1:3100/api-do
 
 ### Struttura del frontend
 
+## Prove di funzionamento
+
+## Possibili miglioramenti
+
+- Fare una gestione degli errori più precisa. Spesso semplicemente viene assunto che l'utente non sbagli ad inserire le cose.
+- Una volta eliminato un utente, sarebbe anche da eliminare tutte le sue playlist.
+- Usare JWT per l'autenticazione (sia lato frontend che lato backend) in modo di avere un accesso più sicuro all'applicazione. Ora come ora viene fatto tutto con localStorage, e quindi facilmente modificabile da browser in pochi click.
+- Dare dei codici di errore più significativi e mostrare più errori all'utente (Magari tramite l'uso di uno SnackBar)
+- Rendere il sito esteticamente più accattivante.
+- Richiedere ad ogni avvio dell'API le canzoni e i generi è un'operazione pesante, sarebbe da spostare in qualche modo da un'altra parte.
+- Per costruire una base di dati più corretta, invece che memorizzare ovunque gli artisti e le canzoni con il loro oggetto per intero, sarebbe stato più sensato memorizzarne solo l'id e all'occorrenza prendere i dati dal database.

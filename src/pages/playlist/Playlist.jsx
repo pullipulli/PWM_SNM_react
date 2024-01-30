@@ -57,14 +57,23 @@ export default function PlaylistPreview() {
         );
     };
 
+    let userData = {
+        name: 'user',
+        surname: 'user',
+        email: 'user@it',
+        username: 'user'
+    };
+
+    if (getUser()) userData = getUser();
+
     useEffect(() => {
         setFilteredSongs(playlist.songs);
     }, [playlist]);
 
     useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: getUser().username}}).then(res => {
+        axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: userData.username}}).then(res => {
             setPlaylist(res.data);
-            setIsOwner(res.data._id.owner === getUser().username);
+            setIsOwner(res.data._id.owner === userData.username);
         });
     }, [playlistName, user]);
 
@@ -155,7 +164,7 @@ export default function PlaylistPreview() {
     const onCopyClick = async () => {
         let newPlaylist = playlist;
 
-        newPlaylist.owner = getUser().username;
+        newPlaylist.owner = userData.username;
         newPlaylist.name = newPlaylist._id.name + " (Copy)";
 
         delete newPlaylist['_id'];

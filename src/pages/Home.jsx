@@ -32,7 +32,7 @@ export default function Home() {
 
 
     return <>
-        <SearchBar filterFunction={filterPlaylist} mt={2}
+        <SearchBar filterFunction={filterPlaylist} sx={{mt: 2}}
                    placeholder="Cerca per: nome, proprietario, tags o nome di canzoni contenute"/>
         <Grid container spacing={3} columns={3} mt={2}>
             {(playlists.length !== 0 && filteredPlaylists.map((playlist, index) => <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>

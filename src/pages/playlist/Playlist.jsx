@@ -30,7 +30,7 @@ import routes from "../../utils/routes.jsx";
 import msToMinutes from "../../utils/msToMinutes.js";
 import CopyIcon from "@mui/icons-material/ContentCopy.js";
 import SearchBar from "../../components/SearchBar.jsx";
-import "./style/Playlist.css";
+
 
 export default function PlaylistPreview() {
     const {getUser, isLoggedIn} = useAuthContext();
@@ -191,7 +191,7 @@ export default function PlaylistPreview() {
         </Dialog>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mt={2}>
-            <Avatar sx={{height: 300, width: '30%'}} variant="square" className="avatar">{playlistName.charAt(0)}</Avatar>
+            <Avatar sx={{height: 300, width: '30%', bgcolor: '#455d3b'}} variant="square" className="avatar">{playlistName.charAt(0)}</Avatar>
             <Stack alignItems='start' spacing={1}>
                 <Typography variant="h4">Playlist {playlist.privacy}</Typography>
                 <Divider flexItem/>
@@ -210,7 +210,7 @@ export default function PlaylistPreview() {
 
                 {isOwner && <Stack direction='row' alignItems={'center'}>
                     <IconButton onClick={deletePlaylist}>
-                        <DeleteIcon className="trash"/>
+                        <DeleteIcon sx={{color: 'red'}}/>
                     </IconButton>
 
                     <Typography variant="button">Elimina Playlist</Typography>

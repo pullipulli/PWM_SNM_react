@@ -45,11 +45,11 @@ export default function Register() {
     };
 
     return (
-        <div>
+        <>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <Stack spacing={2}>
-                        <h2>Registrati!</h2>
+                    <Stack spacing={2} mt={2}>
+                        <Typography variant="h4">Registrati!</Typography>
 
                         <RHFTextField
                             type="email"
@@ -115,6 +115,6 @@ export default function Register() {
             </FormProvider>
 
             {error && <Typography variant="caption">{error}</Typography>}
-        </div>
+        </>
     );
 }

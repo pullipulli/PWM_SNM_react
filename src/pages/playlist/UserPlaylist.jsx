@@ -19,13 +19,28 @@ export default function UserPlaylist() {
     const {user} = useParams();
     const isOwner = user === getUser().username;
 
+    const [error, setError] = useState("Playlist dell'utente in caricamento. Attendere...");
+
     const handleAddPlaylist = async (data) => {
         data.owner = getUser().username;
         data.privacy = data.privacy === true ? 'public' : 'private';
 
         await axios.post(endpoints.playlists, data, { headers: {Authorization: getUser().username}});
 
-        window.location.reload();
+        data._id = {
+            owner: data.owner,
+            name: data.name
+        }
+
+        methods.reset({
+            name: '',
+            description: '',
+            privacy: false,
+            songs: [],
+            tags: ''
+        });
+
+        setPlaylists([...playlists, data]);
     }
 
     useEffect(() => {
@@ -39,6 +54,7 @@ export default function UserPlaylist() {
             if (!isOwner)
                 res.data = res.data.filter((playlist) => playlist.privacy === 'public')
 
+            setError('Non ci sono playlist da visualizzare.');
             setPlaylists(res.data);
         });
     }, [getUser]);
@@ -55,7 +71,7 @@ export default function UserPlaylist() {
                     return <Grid key={playlist._id.name} item zeroMinWidth xs={3} sm={3} md={1}>
                         <PlaylistPreview playlist={playlist}/>
                     </Grid>;
-                })) || <Typography variant='caption'>Playlist dell'utente in caricamento. Attendere...</Typography>}
+                })) || <Typography variant='caption'>{error}</Typography>}
             </Grid>
 
             <Divider/>

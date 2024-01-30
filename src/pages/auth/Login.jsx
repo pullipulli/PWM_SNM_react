@@ -41,8 +41,8 @@ export default function Login() {
         <div>
             <FormProvider {...methods}>
                 <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-                    <Stack spacing={2}>
-                        <div>Credenziali SNM:</div>
+                    <Stack spacing={2} mt={2}>
+                        <Typography variant="h4">Login</Typography>
 
                         <RHFTextField
                             name="username"

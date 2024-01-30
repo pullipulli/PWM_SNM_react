@@ -8,6 +8,7 @@ import {useAuth} from "./hooks/useAuth.jsx";
 import {AuthContext} from "./context/AuthContext.jsx";
 import { Container } from '@mui/material';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function App() {
     const theme = createTheme({
@@ -34,7 +35,7 @@ function App() {
                 <AuthContext.Provider value={useAuth()}>
                     <NavBar/>
                     <Container>
-                        <Suspense fallback={<div className="container">Loading...</div>}>
+                        <Suspense fallback={<CircularProgress/>}>
                             <Routes>
                                 {routesArray.map((route) => {
                                         return <Route key={route.path} path={route.path} element={route.element}/>
@@ -43,7 +44,6 @@ function App() {
                             </Routes>
                         </Suspense>
                     </Container>
-                    
                 </AuthContext.Provider>
             </ThemeProvider>
         </>

@@ -1,4 +1,4 @@
-import {useUser} from "./useUser";
+import {useUser} from "./useUser.jsx";
 import {useCallback} from "react";
 
 export const useAuth = () => {

@@ -1,5 +1,33 @@
 # Relazione del progetto 'Social Network for Music'
 
+- [Relazione del progetto 'Social Network for Music'](#relazione-del-progetto-social-network-for-music)
+  - [Informazioni Generali](#informazioni-generali)
+    - [Stack tecnologico](#stack-tecnologico)
+  - [Setup generale](#setup-generale)
+    - [Prerequisiti](#prerequisiti)
+    - [Avviare il backend](#avviare-il-backend)
+    - [Avviare il frontend (development mode)](#avviare-il-frontend-development-mode)
+      - [Production](#production)
+      - [Credenziali](#credenziali)
+    - [Buildare la documentazione dell'API (swagger)](#buildare-la-documentazione-dellapi-swagger)
+  - [Struttura](#struttura)
+    - [Struttura del backend (mongodb)](#struttura-del-backend-mongodb)
+      - [artists](#artists)
+      - [genres](#genres)
+      - [playlists](#playlists)
+      - [songs](#songs)
+      - [users](#users)
+    - [Struttura del backend (Node)](#struttura-del-backend-node)
+    - [Struttura del frontend](#struttura-del-frontend)
+      - [Home](#home)
+      - [Register](#register)
+      - [Login](#login)
+      - [Profile](#profile)
+      - [UpdateProfile](#updateprofile)
+      - [UserPlaylist](#userplaylist)
+      - [Playlist](#playlist)
+  - [Possibili miglioramenti](#possibili-miglioramenti)
+
 ## Informazioni Generali
 
 - Autore: Andrea Pullia
@@ -18,7 +46,7 @@ Le prove di funzionamento sono descritte in questa relazione.
 
 Frontend sviluppato con **React Vite** (Javascript).
 
-Backend sviluppato con **NodeJS** ed **express** (Javascript) usando come database **mongodb**. La documentazione dell'API è pubblicata con uno swagger alla route **/api-docs**. Essa è generata grazie all'uso di [swagger-autogen](https://www.npmjs.com/package/swagger-autogen)
+Backend sviluppato con **NodeJS** ed **express** (Javascript) usando come database **mongodb**. La documentazione dell'API è pubblicata con uno swagger alla route **/api-docs**. Essa è generata grazie all'uso di [swagger-autogen](https://www.npmjs.com/package/swagger-autogen).
 
 ## Setup generale
 
@@ -38,7 +66,7 @@ cd PWM_SNM_backend
 npm install
  ```
 
-Il backend si aspetta di avere un file `.env` in questo formato (descritto anche nel file `.env.example`) :
+Il backend si aspetta di avere un file `.env` in questo formato (descritto anche nel file `.env.example`):
 
 ```
 DB_URI=
@@ -58,7 +86,7 @@ Nel progetto consegnato su upload, è incluso un file `.env` con cui il progetto
 cd PWM_SNM_backend
 npm run start
 ```
-Verrà hostato al seguente indirizzo: [http://127.0.0.1:3100/api](http://127.0.0.1:3100/api)
+Verrà hostato al seguente indirizzo: [http://127.0.0.1:3100/api](http://127.0.0.1:3100/api).
 
 ### Avviare il frontend (development mode)
 
@@ -66,11 +94,11 @@ Verrà hostato al seguente indirizzo: [http://127.0.0.1:3100/api](http://127.0.0
 cd PWM_SNM_react
 npm run dev
 ```
-Verrà hostato al seguente indirizzo: [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+Verrà hostato al seguente indirizzo: [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
 #### Production
 
-E' anche possibile creare l'applicazione in production mode, ma non lo ritengo necessario; in qualsiasi caso si dovrebbe utilizzare `npm run build` e poi avviare il progetto ottenuto con `npm start` (entrando nella cartella con il contenuto del codice di produzione `dist`). In quel caso il progetto verrebbe hostato sulla porta `80`.
+E' anche possibile creare l'applicazione in production mode, ma non lo ritengo necessario; in qualsiasi caso si dovrebbe utilizzare `npm run build` e poi la directory con l'applicazione pronta all'uso dovrebbe essere in `dist`.
 
 #### Credenziali
 

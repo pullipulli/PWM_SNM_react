@@ -17,7 +17,7 @@ export default function UserPlaylist() {
     const [songs, setSongs] = useState([]);
     const methods = useForm();
     const {user} = useParams();
-    const isOwner = user === getUser().username;
+    const isOwner = user === getUser()?.username;
 
     const [error, setError] = useState("Playlist dell'utente in caricamento. Attendere...");
 
@@ -44,13 +44,7 @@ export default function UserPlaylist() {
     }
 
     useEffect(() => {
-        if (!isLoggedIn()) {
-            navigate(routes.login.path);
-        }
-    }, [isLoggedIn]);
-
-    useEffect(() => {
-        axios.get(`${endpoints.playlists}/${user}`, { headers: {Authorization: getUser().username}}).then(res => {
+        axios.get(`${endpoints.playlists}/${user}`, { headers: {Authorization: getUser()?.username}}).then(res => {
             if (!isOwner)
                 res.data = res.data.filter((playlist) => playlist.privacy === 'public')
 

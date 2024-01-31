@@ -1,6 +1,9 @@
 # Relazione del progetto 'Social Network for Music'
 
+## Indice
+
 - [Relazione del progetto 'Social Network for Music'](#relazione-del-progetto-social-network-for-music)
+  - [Indice](#indice)
   - [Informazioni Generali](#informazioni-generali)
     - [Stack tecnologico](#stack-tecnologico)
   - [Setup generale](#setup-generale)

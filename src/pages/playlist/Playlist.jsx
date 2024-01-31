@@ -42,6 +42,7 @@ export default function PlaylistPreview() {
     const navigate = useNavigate();
     const [isOwner, setIsOwner] = useState(false);
     const [filteredSongs, setFilteredSongs] = useState([]);
+    const [songError, setSongError] = useState("Playlist in caricamento. Attendere...");
 
     const filterSongs = (searchInput) => {
         searchInput = searchInput.toUpperCase();
@@ -52,7 +53,7 @@ export default function PlaylistPreview() {
                 return song.name.toUpperCase().match(searchInput) ||
                     song.album.name.toUpperCase().match(searchInput) ||
                     song.artists.some((artist) => artist.name.toUpperCase().match(searchInput)) ||
-                    song.artists.some((artist) => artist.genres.some((genre) => genre.toUpperCase().match(searchInput)));
+                    song.artists.some((artist) => artist.genres && artist.genres.some((genre) => genre.toUpperCase().match(searchInput)));
             })
         );
     };
@@ -72,7 +73,9 @@ export default function PlaylistPreview() {
 
     useEffect(() => {
         axios.get(`${endpoints.playlists}/${user}/${playlistName}`, { headers: {Authorization: userData.username}}).then(res => {
-            setPlaylist(res.data);
+            if(res.data)
+                setPlaylist(res.data);
+            setSongError('Playlist non disponibile. Sei probabilmente nel posto sbagliato!');
             setIsOwner(res.data._id.owner === userData.username);
         });
     }, [playlistName, user]);
@@ -196,7 +199,10 @@ export default function PlaylistPreview() {
                 <Typography variant="h4">Playlist {playlist.privacy}</Typography>
                 <Divider flexItem/>
                 <Typography variant="h5">{playlistName}</Typography>
-                <Typography variant="h6">by {user}</Typography>
+                <Typography variant="h6" component={Link} onClick={(e) => {
+                    e.preventDefault();
+                    navigate(routes.playlists.path + '/' + user);
+                }}>by {user}</Typography>
                 <Typography variant="h6">Descrizione: {playlist.description}</Typography>
                 <Typography variant="h6">Tags: {'#' + playlist.tags.join('#')}</Typography>
             </Stack>
@@ -260,7 +266,7 @@ export default function PlaylistPreview() {
                         <Link target='_blank' href={song.song.preview_url}>Preview</Link>
                     </AccordionDetails>
                 </Accordion>
-            )) || <Typography variant="caption">Playlist in caricamento. Attendere...</Typography>}
+            )) || <Typography variant="caption">{songError}</Typography>}
         </Stack>
     </>;
 }
